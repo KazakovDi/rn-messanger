@@ -7,10 +7,10 @@ import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons/faMagnifyingG
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import FloatingBtn from '../../Functional/FloatIcon/FloatingBtn';
 
-const ChatsList = () => {
+const ChatsList = ({navigation}) => {
   const [isActive, setIsActive] = useState(false);
   return (
-    <View>
+    <View style={{flex: 1, marginHorizontal: 10}}>
       <View style={{height: 50}}>
         {isActive ? (
           <View style={{display: 'flex', flexDirection: 'row'}}>
@@ -26,7 +26,9 @@ const ChatsList = () => {
           </TouchableOpacity>
         )}
       </View>
-      <InterestsList />
+      <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
+        <InterestsList />
+      </TouchableOpacity>
       <FloatingBtn pos={{right: 10, bottom: 15}} />
     </View>
   );
