@@ -1,9 +1,11 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
-import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {Avatar, Input, Icon} from '@rneui/themed';
+import {View, Text, TouchableOpacity, FlatList, TextInput} from 'react-native';
+import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faCircleArrowRight';
 
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {Avatar} from '@rneui/themed';
+
+import ChatInput from '../../Functional/ChatInput/ChatInput';
 import Message from '../../UI/Message';
 const title = 'Олег';
 const fakeMsgs = [
@@ -34,7 +36,7 @@ const fakeMsgs = [
 ];
 const Chat = ({navigation}) => {
   return (
-    <View style={{flex: 1}}>
+    <View style={{display: 'flex', flex: 1}}>
       <View
         style={{
           display: 'flex',
@@ -67,7 +69,7 @@ const Chat = ({navigation}) => {
           </View>
         </TouchableOpacity>
       </View>
-      <View style={{marginHorizontal: 10}}>
+      <View style={{flexShrink: 2, marginHorizontal: 10}}>
         <FlatList
           keyExtractor={item => item.body}
           data={fakeMsgs}
@@ -75,14 +77,7 @@ const Chat = ({navigation}) => {
             <Message isUser={item.user === 'Ты'} body={item.body} />
           )}></FlatList>
       </View>
-      <Text>Chat</Text>
-      <Input
-        placeholder="Сообщение"
-        rightIcon={{type: 'ionicon', name: 'chevron-left'}}
-        multiline
-        // inputStyle={{backgroundColor: '#c7c7c7'}}
-        inputContainerStyle={{backgroundColor: '#c7c7c7', borderRadius: 10}}
-      />
+      <ChatInput />
     </View>
   );
 };
