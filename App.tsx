@@ -15,19 +15,26 @@ import {SafeAreaView, ScrollView} from 'react-native';
 import ChatsList from './Components/Pages/ChatsList/ChatsList';
 import Chat from './Components/Pages/Chat/Chat';
 import ActivityInfo from './Components/Pages/ActivityInfo/ActivityInfo';
+import {Provider} from 'react-redux';
+import store from './store/store';
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
   return (
     <SafeAreaView style={{flex: 1}}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Info" component={ActivityInfo}></Stack.Screen>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Info" component={ActivityInfo}></Stack.Screen>
 
-          <Stack.Screen name="Chat" component={Chat}></Stack.Screen>
-          <Stack.Screen name="Home" component={ChatsList}></Stack.Screen>
-        </Stack.Navigator>
-      </NavigationContainer>
+            <Stack.Screen
+              name="Chat"
+              component={Chat}
+              roomId={({params}) => params.roomId}></Stack.Screen>
+            <Stack.Screen name="Home" component={ChatsList}></Stack.Screen>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     </SafeAreaView>
   );
 }

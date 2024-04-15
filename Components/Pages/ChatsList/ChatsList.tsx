@@ -9,6 +9,7 @@ import FloatingBtn from '../../Functional/FloatIcon/FloatingBtn';
 
 const ChatsList = ({navigation}) => {
   const [isActive, setIsActive] = useState(false);
+
   return (
     <View style={{flex: 1, marginHorizontal: 10}}>
       <View style={{height: 50}}>
@@ -26,9 +27,7 @@ const ChatsList = ({navigation}) => {
           </TouchableOpacity>
         )}
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
-        <InterestsList />
-      </TouchableOpacity>
+      <InterestsList navigation={navigation} />
       <FloatingBtn pos={{right: 10, bottom: 15}} />
     </View>
   );

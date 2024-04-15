@@ -19,9 +19,8 @@ const ChatInput = () => {
         style={{maxHeight: 110, width: '90%'}}
         multiline
         placeholder="отправить"
-        onChange={e => {
-          console.log(e.target);
-          setIsActive(!!e.target.value);
+        onChangeText={e => {
+          setIsActive(!!e);
         }}
       />
       <TouchableOpacity>

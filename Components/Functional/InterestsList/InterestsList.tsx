@@ -1,6 +1,9 @@
 import React from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
 import InterestItem from '../../UI/InterestItem/InterestItem';
+
+import {RootState, useAppSelector} from '../../../store/store';
+
 const data = [
   {
     img: '#',
@@ -45,13 +48,32 @@ const data = [
     key: 6,
   },
 ];
-const InterestsList = () => {
+const InterestsList = ({navigation}) => {
+  const rooms = useAppSelector((state: RootState) => {
+    return state.user.rooms.map(item => {
+      for (let room of state.rooms.data) {
+        console.log('item', item, room.id);
+        if (room.id == item)
+          return {
+            title: room.name,
+            lastMsg: room.msgs[room.msgs.length - 1].body,
+            id: room.id,
+          };
+      }
+    });
+  });
+  console.log('room', rooms);
   return (
     <FlatList
       renderItem={({item}) => (
-        <InterestItem avatar={item.img} title={item.title} msg={item.lastMsg} />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Chat', {roomId: item.id});
+          }}>
+          <InterestItem title={item.title} msg={item.lastMsg} />
+        </TouchableOpacity>
       )}
-      data={data}>
+      data={rooms}>
       InterestsList
     </FlatList>
   );

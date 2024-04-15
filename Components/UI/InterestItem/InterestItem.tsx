@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, ThemeProvider, Avatar} from '@rneui/themed';
 import {View, Text} from 'react-native';
 
-const InterestItem = ({avatar, title, msg}) => {
+const InterestItem = ({title, msg}) => {
   return (
     <View
       style={{

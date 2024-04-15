@@ -7,34 +7,17 @@ import {Avatar} from '@rneui/themed';
 
 import ChatInput from '../../Functional/ChatInput/ChatInput';
 import Message from '../../UI/Message';
+
+import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
 const title = 'Олег';
-const fakeMsgs = [
-  {user: 'Олег', body: 'Lorem Ipsum is simply dummy t'},
-  {user: 'Ты', body: 'ext of the printing and '},
-  {user: 'Олег', body: 'typesetting industry. Lo'},
-  {user: 'Ты', body: 'rem Ipsum has b'},
-  {user: 'Олег', body: 'een the industrys standard dummy text '},
-  {user: 'Ты', body: 'ever since the 1500s, when an unknown'},
-  {user: 'Олег', body: 'printer took a galley of type'},
-  {user: 'Олег', body: 'and scrambled it to make'},
-  {user: 'Ты', body: 'a type specimen book. It'},
-  {user: 'Олег', body: 'has survived not only five centuries,'},
-  {user: 'Ты', body: 'ut also the leap into electronic typesetting,'},
-  {
-    user: 'Олег',
-    body: 'b remaining essentially unchanged. It was popularised ',
-  },
-  {
-    user: 'Ты',
-    body: ' in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,',
-  },
-  {user: 'Ты', body: ' and more recently with desktop '},
-  {
-    user: 'Олег',
-    body: ' publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-  },
-];
-const Chat = ({navigation}) => {
+const Chat = ({navigation: {navigate}, route}) => {
+  const msgs = useAppSelector((state: RootState) => {
+    for (let room of state.rooms.data) {
+      if (room.id === route.params.roomId) return room.msgs;
+    }
+  });
+  const User = useAppSelector((state: RootState) => state.user.name);
+  console.log(msgs);
   return (
     <View style={{display: 'flex', flex: 1}}>
       <View
@@ -44,10 +27,10 @@ const Chat = ({navigation}) => {
           alignItems: 'center',
           paddingHorizontal: 10,
         }}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity onPress={() => navigate('Home')}>
           <FontAwesomeIcon size={25} icon={faArrowLeft} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Info')}>
+        <TouchableOpacity onPress={() => navigate('Info')}>
           <View
             style={{
               display: 'flex',
@@ -72,10 +55,11 @@ const Chat = ({navigation}) => {
       <View style={{flexShrink: 2, marginHorizontal: 10}}>
         <FlatList
           keyExtractor={item => item.body}
-          data={fakeMsgs}
+          data={msgs}
           renderItem={({item}) => (
-            <Message isUser={item.user === 'Ты'} body={item.body} />
-          )}></FlatList>
+            <Message isUser={item.user === User} body={item.body} />
+          )}
+        />
       </View>
       <ChatInput />
     </View>
