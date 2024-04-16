@@ -1,12 +1,11 @@
 import React from 'react';
 import {Button} from '@rneui/themed';
-import {faUserPlus} from '@fortawesome/free-solid-svg-icons/faUserPlus';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {TouchableOpacity, View} from 'react-native';
-const FloatingBtn = ({icon, pos}) => {
+const FloatingBtn = ({icon, pos, onPress}) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View
         style={{
           width: 64,
@@ -19,7 +18,7 @@ const FloatingBtn = ({icon, pos}) => {
           position: 'absolute',
           ...pos,
         }}>
-        <FontAwesomeIcon icon={faUserPlus}></FontAwesomeIcon>
+        <FontAwesomeIcon icon={icon} />
       </View>
     </TouchableOpacity>
   );

@@ -17,6 +17,7 @@ import Chat from './Components/Pages/Chat/Chat';
 import ActivityInfo from './Components/Pages/ActivityInfo/ActivityInfo';
 import {Provider} from 'react-redux';
 import store from './store/store';
+import CreateActivity from './Components/Pages/CreateActivity/CreateActivity';
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
@@ -32,6 +33,9 @@ function App(): React.JSX.Element {
               component={Chat}
               roomId={({params}) => params.roomId}></Stack.Screen>
             <Stack.Screen name="Home" component={ChatsList}></Stack.Screen>
+            <Stack.Screen
+              name="Create"
+              component={CreateActivity}></Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

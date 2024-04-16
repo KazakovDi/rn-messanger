@@ -5,6 +5,8 @@ import InterestsList from '../../Functional/InterestsList/InterestsList';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons/faMagnifyingGlass';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
+import {faPen} from '@fortawesome/free-solid-svg-icons/faPen';
+
 import FloatingBtn from '../../Functional/FloatIcon/FloatingBtn';
 
 const ChatsList = ({navigation}) => {
@@ -28,7 +30,11 @@ const ChatsList = ({navigation}) => {
         )}
       </View>
       <InterestsList navigation={navigation} />
-      <FloatingBtn pos={{right: 10, bottom: 15}} />
+      <FloatingBtn
+        onPress={() => navigation.navigate('Create')}
+        pos={{right: 10, bottom: 15}}
+        icon={faPen}
+      />
     </View>
   );
 };
