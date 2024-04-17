@@ -7,12 +7,12 @@ const Message = ({isUser, body}) => {
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
-        justifyContent: isUser ? 'flex-start' : 'flex-end',
+        justifyContent: !isUser ? 'flex-start' : 'flex-end',
         marginVertical: 8,
       }}>
       <View
         style={{
-          backgroundColor: isUser ? 'red' : 'blue',
+          backgroundColor: !isUser ? 'red' : 'blue',
           width: '50%',
           paddingHorizontal: 5,
           paddingVertical: 10,

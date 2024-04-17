@@ -1,22 +1,29 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, FlatList, TextInput} from 'react-native';
-import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faCircleArrowRight';
-
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {Avatar} from '@rneui/themed';
+
+import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faCircleArrowRight';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 import ChatInput from '../../Functional/ChatInput/ChatInput';
 import Message from '../../UI/Message';
 
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
+import {addMsg} from '../../../store/Room.slice';
 const title = 'Олег';
 const Chat = ({navigation: {navigate}, route}) => {
-  const msgs = useAppSelector((state: RootState) => {
+  const dispatch = useAppDispatch();
+  const [msgs, roomId] = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
-      if (room.id === route.params.roomId) return room.msgs;
+      if (room.id === route.params.roomId) return [room.msgs, room.id];
     }
   });
+
   const User = useAppSelector((state: RootState) => state.user.name);
+  console.log('user', User);
+  const sendMsgHandler = () => {
+    dispatch(addMsg({user: User, body: 'body1', id: roomId}));
+  };
   console.log(msgs);
   return (
     <View style={{display: 'flex', flex: 1}}>
@@ -61,7 +68,7 @@ const Chat = ({navigation: {navigate}, route}) => {
           )}
         />
       </View>
-      <ChatInput />
+      <ChatInput onSendMsg={sendMsgHandler} />
     </View>
   );
 };

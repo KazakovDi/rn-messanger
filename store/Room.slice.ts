@@ -73,8 +73,22 @@ const initialState = {
 const roomsSlice = createSlice({
   name: 'rooms',
   initialState,
-  reducers: {},
+  reducers: {
+    addMsg: (state, action) => {
+      console.log('action', action.payload);
+      for (let room of state.data) {
+        if (room.id === action.payload.id) {
+          console.log('true');
+          room.msgs.push({
+            user: action.payload.user,
+            body: action.payload.body,
+          });
+          break;
+        }
+      }
+    },
+  },
 });
 
-// export const {setAdress} = shopsSlice.actions;
+export const {addMsg} = roomsSlice.actions;
 export const roomsReducer = roomsSlice.reducer;
