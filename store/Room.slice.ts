@@ -75,10 +75,8 @@ const roomsSlice = createSlice({
   initialState,
   reducers: {
     addMsg: (state, action) => {
-      console.log('action', action.payload);
       for (let room of state.data) {
         if (room.id === action.payload.id) {
-          console.log('true');
           room.msgs.push({
             user: action.payload.user,
             body: action.payload.body,
@@ -87,8 +85,25 @@ const roomsSlice = createSlice({
         }
       }
     },
+    addImgs: (state, action) => {
+      const items = [];
+
+      for (let index = 0; index < action.payload.attaches.length; index++) {
+        items.push({
+          type: 'img',
+          uri: action.payload.attaches[index],
+          user: action.payload.user,
+        });
+      }
+      for (let room of state.data) {
+        if (room.id === action.payload.roomId) {
+          room.msgs.push(...items);
+          break;
+        }
+      }
+    },
   },
 });
 
-export const {addMsg} = roomsSlice.actions;
+export const {addMsg, addImgs} = roomsSlice.actions;
 export const roomsReducer = roomsSlice.reducer;

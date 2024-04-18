@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-const Message = ({isUser, body}) => {
+import {View, Text, Image} from 'react-native';
+const Message = ({isUser, type, uri, body}) => {
+  console.log('uri', type, uri, body);
   return (
     <View
       style={{
@@ -18,7 +19,16 @@ const Message = ({isUser, body}) => {
           paddingVertical: 10,
           borderRadius: 10,
         }}>
-        <Text>{body}</Text>
+        {type === 'img' ? (
+          <Image
+            source={{
+              uri: uri.uri,
+            }}
+            style={{width: '100%', height: 350}}
+          />
+        ) : (
+          <Text>{body}</Text>
+        )}
       </View>
     </View>
   );

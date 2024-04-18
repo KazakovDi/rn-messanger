@@ -1,28 +1,46 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {View, Text, TouchableOpacity, FlatList, TextInput} from 'react-native';
 import {Avatar} from '@rneui/themed';
 
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faCircleArrowRight';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+// import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import ChatInput from '../../Functional/ChatInput/ChatInput';
 import Message from '../../UI/Message';
+// import {RNCamera} from 'react-native-camera';
 
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
-import {addMsg} from '../../../store/Room.slice';
+import {addMsg, addImgs} from '../../../store/Room.slice';
 const title = 'Олег';
 const Chat = ({navigation: {navigate}, route}) => {
   const dispatch = useAppDispatch();
+
   const [msgs, roomId] = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
       if (room.id === route.params.roomId) return [room.msgs, room.id];
     }
   });
-
   const User = useAppSelector((state: RootState) => state.user.name);
-  console.log('user', User);
-  const sendMsgHandler = () => {
-    dispatch(addMsg({user: User, body: 'body1', id: roomId}));
+
+  // const takePicture = async () => {
+  //   const dat = await cameraRef.current.takePictureAsync();
+  //   MobxStore.savePhoto(dat.uri);
+  //   return Promise.resolve();
+  // };
+  // const record = async () => {
+  //   const dat = await cameraRef.current.recordAsync();
+  //   MobxStore.saveVideo(dat.uri);
+  //   return Promise.resolve();
+  // };
+  const listRef = useRef(null);
+  useEffect(() => {
+    listRef.current.scrollToEnd();
+  }, []);
+  const sendMsgHandler = (msg: string, attached) => {
+    dispatch(addMsg({user: User, body: msg, id: roomId}));
+    dispatch(addImgs({user: User, roomId: roomId, attaches: attached}));
+    listRef.current.scrollToEnd();
   };
   console.log(msgs);
   return (
@@ -61,13 +79,41 @@ const Chat = ({navigation: {navigate}, route}) => {
       </View>
       <View style={{flexShrink: 2, marginHorizontal: 10}}>
         <FlatList
-          keyExtractor={item => item.body}
+          ref={listRef}
+          keyExtractor={(item, index) => +index}
           data={msgs}
           renderItem={({item}) => (
-            <Message isUser={item.user === User} body={item.body} />
+            <Message
+              isUser={item.user === User}
+              type={item.type}
+              uri={item.uri}
+              body={item.body}
+            />
           )}
+          getItemLayout={(data, index) => ({
+            length: 50,
+            offset: 500 * index,
+            index,
+          })}
         />
       </View>
+      {/* <TouchableOpacity
+        onPress={() => {
+          request(PERMISSIONS.ANDROID.CAMERA).then(res => {
+            takePicture().then(res => {
+              // bottomSheetRef.current.close();
+              console.log('res', res);
+            });
+          });
+        }}
+        onLongPress={() => {
+          request(PERMISSIONS.ANDROID.CAMERA).then(res => {
+            record();
+          });
+        }}
+        delayLongPress={500}>
+        <Text>Media</Text>
+      </TouchableOpacity> */}
       <ChatInput onSendMsg={sendMsgHandler} />
     </View>
   );
