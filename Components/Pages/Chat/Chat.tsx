@@ -11,16 +11,19 @@ import Message from '../../UI/Message';
 // import {RNCamera} from 'react-native-camera';
 
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
-import {addMsg, addImgs} from '../../../store/Room.slice';
+import {addMsg, addImgs, togglePinned} from '../../../store/Room.slice';
+import PinnedMessages from '../../Functional/PinnedMessages/PinnedMessages';
 const title = 'Олег';
 const Chat = ({navigation: {navigate}, route}) => {
   const dispatch = useAppDispatch();
 
-  const [msgs, roomId] = useAppSelector((state: RootState) => {
+  const [msgs, roomId, pinned] = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
-      if (room.id === route.params.roomId) return [room.msgs, room.id];
+      if (room.id === route.params.roomId)
+        return [room.msgs, room.id, room.pinned];
     }
   });
+  console.log('pin', pinned);
   const User = useAppSelector((state: RootState) => state.user.name);
 
   // const takePicture = async () => {
@@ -77,13 +80,26 @@ const Chat = ({navigation: {navigate}, route}) => {
           </View>
         </TouchableOpacity>
       </View>
+      <PinnedMessages
+        onPress={index => {
+          console.log('index', index);
+          // listRef.current.scrollToIndex(Number(index));
+          listRef.current.scrollToIndex({index: Number(index)});
+        }}
+        data={Object.values(pinned)}
+        keys={Object.keys(pinned)}
+      />
       <View style={{flexShrink: 2, marginHorizontal: 10}}>
         <FlatList
           ref={listRef}
           keyExtractor={(item, index) => +index}
           data={msgs}
-          renderItem={({item}) => (
+          // dataLength={msgs.length}
+          renderItem={({item, index}) => (
             <Message
+              onLongPress={() => {
+                dispatch(togglePinned({roomId, index, body: item.body}));
+              }}
               isUser={item.user === User}
               type={item.type}
               uri={item.uri}

@@ -34,6 +34,7 @@ const initialState = {
           body: 'Aldus PageMaker including versions of Lorem Ipsum.',
         },
       ],
+      pinned: {},
     },
     {
       id: 2,
@@ -67,6 +68,7 @@ const initialState = {
           body: ' publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
         },
       ],
+      pinned: {},
     },
   ],
 };
@@ -102,8 +104,23 @@ const roomsSlice = createSlice({
         }
       }
     },
+    togglePinned: (state, action) => {
+      console.log('s', state.data.pinned);
+
+      for (let room of state.data) {
+        if (action.payload.roomId === room.id) {
+          const item = room.pinned[action.payload.index];
+          if (item) {
+            delete room.pinned[action.payload.index];
+          } else {
+            room.pinned[action.payload.index] = action.payload.body;
+          }
+          break;
+        }
+      }
+    },
   },
 });
 
-export const {addMsg, addImgs} = roomsSlice.actions;
+export const {addMsg, addImgs, togglePinned} = roomsSlice.actions;
 export const roomsReducer = roomsSlice.reducer;
