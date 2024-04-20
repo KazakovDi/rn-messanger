@@ -81,24 +81,33 @@ const Chat = ({navigation: {navigate}, route}) => {
         </TouchableOpacity>
       </View>
       <PinnedMessages
-        onPress={index => {
-          console.log('index', index);
+        onPress={key => {
+          // console.log('index', index);
           // listRef.current.scrollToIndex(Number(index));
-          listRef.current.scrollToIndex({index: Number(index)});
+          for (let index = 0; index < msgs.length; index++) {
+            if (msgs[index].timestamp == key) {
+              console.log('index', index);
+              listRef.current.scrollToIndex({index});
+              break;
+            }
+          }
         }}
         data={Object.values(pinned)}
         keys={Object.keys(pinned)}
+        pinned={pinned}
       />
       <View style={{flexShrink: 2, marginHorizontal: 10}}>
         <FlatList
           ref={listRef}
-          keyExtractor={(item, index) => +index}
+          keyExtractor={(item, index) => item.timestamp}
           data={msgs}
-          // dataLength={msgs.length}
           renderItem={({item, index}) => (
             <Message
+              key={item.timestamp}
               onLongPress={() => {
-                dispatch(togglePinned({roomId, index, body: item.body}));
+                dispatch(
+                  togglePinned({roomId, key: item.timestamp, body: item.body}),
+                );
               }}
               isUser={item.user === User}
               type={item.type}
