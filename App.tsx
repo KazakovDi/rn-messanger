@@ -20,11 +20,16 @@ import store from './store/store';
 import CreateActivity from './Components/Pages/CreateActivity/CreateActivity';
 const Stack = createNativeStackNavigator();
 
+const config = {
+  screens: {
+    Chat: 'chat/:roomId',
+  },
+};
 function App(): React.JSX.Element {
   return (
     <SafeAreaView style={{flex: 1}}>
       <Provider store={store}>
-        <NavigationContainer>
+        <NavigationContainer linking={{config}}>
           <Stack.Navigator initialRouteName="Home">
             <Stack.Screen name="Info" component={ActivityInfo}></Stack.Screen>
 

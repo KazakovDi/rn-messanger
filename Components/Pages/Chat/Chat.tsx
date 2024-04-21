@@ -13,14 +13,13 @@ import Message from '../../UI/Message';
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
 import {addMsg, addImgs, togglePinned} from '../../../store/Room.slice';
 import PinnedMessages from '../../Functional/PinnedMessages/PinnedMessages';
-const title = 'Олег';
 const Chat = ({navigation: {navigate}, route}) => {
   const dispatch = useAppDispatch();
 
-  const [msgs, roomId, pinned] = useAppSelector((state: RootState) => {
+  const [title, msgs, roomId, pinned] = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
       if (room.id === route.params.roomId)
-        return [room.msgs, room.id, room.pinned];
+        return [room.name, room.msgs, room.id, room.pinned];
     }
   });
   console.log('pin', pinned);

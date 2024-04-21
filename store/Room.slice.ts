@@ -5,35 +5,7 @@ const initialState = {
     {
       id: 1,
       name: 'Олег',
-      msgs: [
-        // {user: 'Олег', body: 'Текст 1'},
-        // {user: 'fakeUser1', body: 'Текст 2 Текст 2 Текст 2 '},
-        // {user: 'Олег', body: 'Текст 3 Текст 3 Текст 3'},
-        // {user: 'fakeUser1', body: 'rem Ipsum has b'},
-        // {user: 'Олег', body: 'een the industrys standard dummy text '},
-        // {user: 'fakeUser1', body: 'ever since the 1500s, when an unknown'},
-        // {user: 'Олег', body: 'printer took a galley of type'},
-        // {user: 'Олег', body: 'and scrambled it to make'},
-        // {user: 'fakeUser1', body: 'a type specimen book. It'},
-        // {user: 'Олег', body: 'has survived not only five centuries,'},
-        // {
-        //   user: 'fakeUser1',
-        //   body: 'тексе 4',
-        // },
-        // {
-        //   user: 'Олег',
-        //   body: 'b remaining essentially unchanged. It was popularised ',
-        // },
-        // {
-        //   user: 'fakeUser1',
-        //   body: ' in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,',
-        // },
-        // {user: 'fakeUser1', body: ' and more recently with desktop '},
-        // {
-        //   user: 'Олег',
-        //   body: 'текст 5',
-        // },
-      ],
+      msgs: [],
       pinned: {},
     },
     {
@@ -124,8 +96,18 @@ const roomsSlice = createSlice({
       }
       console.log(state.data);
     },
+    createChat: (state, action) => {
+      console.log('createChat');
+      state.data.push({
+        id: action.payload.id,
+        name: action.payload.name,
+        msgs: [],
+        pinned: {},
+      });
+      console.log('state', state);
+    },
   },
 });
 
-export const {addMsg, addImgs, togglePinned} = roomsSlice.actions;
+export const {addMsg, addImgs, togglePinned, createChat} = roomsSlice.actions;
 export const roomsReducer = roomsSlice.reducer;

@@ -11,9 +11,13 @@ import Contacts from 'react-native-contacts';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import InterestItem from '../../UI/InterestItem/InterestItem';
 import RBSheet from '@poki_san/react-native-bottom-sheet';
-const CreateActivity = () => {
+import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
+import {createChat} from '../../../store/Room.slice';
+import {linkRoom} from '../../../store/User.slice';
+const CreateActivity = ({navigation}) => {
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((state: RootState) => state.rooms.data);
   const [contactList, setContact] = useState([]);
-  console.log('c', contactList);
   const bottomSheetRef = useRef();
   const nameRef = useRef();
   const telRef = useRef();
@@ -38,7 +42,22 @@ const CreateActivity = () => {
       />
       <FlatList
         renderItem={({item}) => (
-          <InterestItem msg="" title={item.displayName} />
+          <TouchableOpacity
+            onPress={() => {
+              for (let room of state) {
+                console.log('room', room);
+                if (room.name === item.displayName) {
+                  navigation.navigate('Chat', {roomId: room.id});
+                  return;
+                }
+              }
+              const newRoomId = Math.random();
+              dispatch(createChat({name: item.displayName, id: newRoomId}));
+              dispatch(linkRoom({id: newRoomId}));
+              navigation.navigate('Chat', {roomId: newRoomId});
+            }}>
+            <InterestItem msg="" title={item.displayName} />
+          </TouchableOpacity>
         )}
         data={contactList}
       />
