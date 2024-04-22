@@ -18,6 +18,7 @@ import ActivityInfo from './Components/Pages/ActivityInfo/ActivityInfo';
 import {Provider} from 'react-redux';
 import store from './store/store';
 import CreateActivity from './Components/Pages/CreateActivity/CreateActivity';
+import Find from './Components/Pages/Find/Find';
 const Stack = createNativeStackNavigator();
 
 const config = {
@@ -30,7 +31,11 @@ function App(): React.JSX.Element {
     <SafeAreaView style={{flex: 1}}>
       <Provider store={store}>
         <NavigationContainer linking={{config}}>
-          <Stack.Navigator initialRouteName="Home">
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+            initialRouteName="Home">
             <Stack.Screen name="Info" component={ActivityInfo}></Stack.Screen>
 
             <Stack.Screen
@@ -38,6 +43,7 @@ function App(): React.JSX.Element {
               component={Chat}
               roomId={({params}) => params.roomId}></Stack.Screen>
             <Stack.Screen name="Home" component={ChatsList}></Stack.Screen>
+            <Stack.Screen name="Find" component={Find}></Stack.Screen>
             <Stack.Screen
               name="Create"
               component={CreateActivity}></Stack.Screen>

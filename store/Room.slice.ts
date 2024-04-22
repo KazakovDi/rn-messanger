@@ -43,6 +43,7 @@ const initialState = {
       pinned: {},
     },
   ],
+  find: [],
 };
 const roomsSlice = createSlice({
   name: 'rooms',
@@ -56,7 +57,6 @@ const roomsSlice = createSlice({
             body: action.payload.body,
             timestamp: Date.now(),
           });
-          console.log('addMsg', room.msgs);
           break;
         }
       }
@@ -80,8 +80,6 @@ const roomsSlice = createSlice({
       }
     },
     togglePinned: (state, action) => {
-      console.log('s', state.data);
-
       for (let room of state.data) {
         if (action.payload.roomId === room.id) {
           const item = room.pinned[action.payload.key];
@@ -94,20 +92,28 @@ const roomsSlice = createSlice({
           break;
         }
       }
-      console.log(state.data);
     },
     createChat: (state, action) => {
-      console.log('createChat');
       state.data.push({
         id: action.payload.id,
         name: action.payload.name,
         msgs: [],
         pinned: {},
       });
-      console.log('state', state);
+    },
+    findActivities: (state, action) => {
+      if (action.payload.filter === '') {
+        state.find = [];
+        return;
+      }
+      state.find = state.data.filter(item => {
+        const reg = new RegExp(action.payload.filter, 'gi');
+        return reg.test(item.name);
+      });
     },
   },
 });
 
-export const {addMsg, addImgs, togglePinned, createChat} = roomsSlice.actions;
+export const {addMsg, addImgs, togglePinned, createChat, findActivities} =
+  roomsSlice.actions;
 export const roomsReducer = roomsSlice.reducer;
