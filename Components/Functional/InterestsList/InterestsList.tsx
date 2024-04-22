@@ -5,19 +5,7 @@ import InterestItem from '../../UI/InterestItem/InterestItem';
 import {RootState, useAppSelector} from '../../../store/store';
 
 const InterestsList = ({navigation}) => {
-  const rooms = useAppSelector((state: RootState) => {
-    return state.user.rooms.map(item => {
-      for (let room of state.rooms.data) {
-        console.log('item', item, room.id);
-        if (room.id == item)
-          return {
-            title: room.name,
-            lastMsg: room.msgs[room.msgs.length - 1]?.body,
-            id: room.id,
-          };
-      }
-    });
-  });
+  const rooms = useAppSelector((state: RootState) => state.rooms.data);
   return (
     <FlatList
       renderItem={({item}) => (
@@ -26,14 +14,12 @@ const InterestsList = ({navigation}) => {
             navigation.navigate('Chat', {roomId: item.id});
           }}>
           <InterestItem
-            title={item.title}
-            msg={item.lastMsg ? item.lastMsg : ''}
+            title={item.name}
+            msg={item.msgs.length ? item.msgs[item.msgs.length - 1].body : ''}
           />
         </TouchableOpacity>
       )}
-      data={rooms}>
-      InterestsList
-    </FlatList>
+      data={rooms}></FlatList>
   );
 };
 

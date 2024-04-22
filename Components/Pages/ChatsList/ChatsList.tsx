@@ -20,7 +20,7 @@ const ChatsList = ({navigation}) => {
             <TouchableOpacity onPress={() => setIsActive(false)}>
               <FontAwesomeIcon icon={faArrowLeft} />
             </TouchableOpacity>
-            <Input placeholder="Поиск" />
+            <Input onChangeText={e => {}} placeholder="Поиск" />
           </View>
         ) : null}
         {isActive ? null : (

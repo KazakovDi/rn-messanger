@@ -24,17 +24,6 @@ const Chat = ({navigation: {navigate}, route}) => {
   });
   console.log('pin', pinned);
   const User = useAppSelector((state: RootState) => state.user.name);
-
-  // const takePicture = async () => {
-  //   const dat = await cameraRef.current.takePictureAsync();
-  //   MobxStore.savePhoto(dat.uri);
-  //   return Promise.resolve();
-  // };
-  // const record = async () => {
-  //   const dat = await cameraRef.current.recordAsync();
-  //   MobxStore.saveVideo(dat.uri);
-  //   return Promise.resolve();
-  // };
   const listRef = useRef(null);
   useEffect(() => {
     listRef.current.scrollToEnd();
@@ -44,7 +33,6 @@ const Chat = ({navigation: {navigate}, route}) => {
     dispatch(addImgs({user: User, roomId: roomId, attaches: attached}));
     listRef.current.scrollToEnd();
   };
-  console.log(msgs);
   return (
     <View style={{display: 'flex', flex: 1}}>
       <View
