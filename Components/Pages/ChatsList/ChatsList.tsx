@@ -6,17 +6,17 @@ import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons/faMagnifyingG
 import {faPen} from '@fortawesome/free-solid-svg-icons/faPen';
 
 import FloatingBtn from '../../Functional/FloatIcon/FloatingBtn';
-
+import NavBar from '../../Functional/NavBar/NavBar';
 const ChatsList = ({navigation}) => {
   return (
     <View style={{flex: 1, marginHorizontal: 10}}>
       <View style={{height: 50}}>
-        <TouchableOpacity
-          onPress={() => {
+        <NavBar
+          rightBtn={faMagnifyingGlass}
+          rightOnPress={() => {
             navigation.navigate('Find');
-          }}>
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </TouchableOpacity>
+          }}
+        />
       </View>
       <InterestsList navigation={navigation} />
       <FloatingBtn
