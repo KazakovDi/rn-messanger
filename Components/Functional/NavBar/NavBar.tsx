@@ -1,6 +1,5 @@
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
-import {faImage} from '@fortawesome/free-solid-svg-icons/faImage';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 const NavBar = ({leftBtn, leftOnPress, rightBtn, rightOnPress, children}) => {

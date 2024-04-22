@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {View, Text, TouchableOpacity, FlatList, TextInput} from 'react-native';
 import {Avatar} from '@rneui/themed';
 
-import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faCircleArrowRight';
+import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 // import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
@@ -13,6 +13,7 @@ import Message from '../../UI/Message';
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
 import {addMsg, addImgs, togglePinned} from '../../../store/Room.slice';
 import PinnedMessages from '../../Functional/PinnedMessages/PinnedMessages';
+import NavBar from '../../Functional/NavBar/NavBar';
 const Chat = ({navigation: {navigate}, route}) => {
   const dispatch = useAppDispatch();
 
@@ -22,7 +23,6 @@ const Chat = ({navigation: {navigate}, route}) => {
         return [room.name, room.msgs, room.id, room.pinned];
     }
   });
-  console.log('pin', pinned);
   const User = useAppSelector((state: RootState) => state.user.name);
   const listRef = useRef(null);
   useEffect(() => {
@@ -42,30 +42,29 @@ const Chat = ({navigation: {navigate}, route}) => {
           alignItems: 'center',
           paddingHorizontal: 10,
         }}>
-        <TouchableOpacity onPress={() => navigate('Home')}>
-          <FontAwesomeIcon size={25} icon={faArrowLeft} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate('Info')}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignContent: 'center',
-              paddingVertical: 10,
-              paddingLeft: 10,
-            }}>
-            <Avatar
-              size={64}
-              rounded
-              title={title[0] + title[1]}
-              containerStyle={{backgroundColor: '#6733b9'}}
-            />
-            <View style={{marginLeft: 15, paddingVertical: 6}}>
-              <Text style={{fontWeight: 700}}>{title}</Text>
-              <Text>Был(а) недавно</Text>
+        <NavBar leftBtn={faArrowLeft} leftOnPress={() => navigate('Home')}>
+          <TouchableOpacity onPress={() => navigate('Info')}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignContent: 'center',
+                paddingVertical: 10,
+                paddingLeft: 10,
+              }}>
+              <Avatar
+                size={64}
+                rounded
+                title={title[0] + title[1]}
+                containerStyle={{backgroundColor: '#6733b9'}}
+              />
+              <View style={{marginLeft: 15, paddingVertical: 6}}>
+                <Text style={{fontWeight: 700}}>{title}</Text>
+                <Text>Был(а) недавно</Text>
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </NavBar>
       </View>
       <PinnedMessages
         onPress={key => {
