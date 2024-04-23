@@ -1,46 +1,32 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
-
-const initialState = {
+interface Msg {
+  user: string;
+  body?: string;
+  timestamp: number;
+  type?: 'img';
+  uri?: string;
+}
+interface RoomItem {
+  id: number;
+  name: string;
+  msgs: Msg[];
+  pinnedCache: {
+    [key: number]: string;
+  };
+  pinned: {timestamp: number; body: string}[];
+}
+interface RoomSliceState {
+  data: RoomItem[];
+  find: RoomItem[];
+}
+const initialState: RoomSliceState = {
   data: [
     {
       id: 1,
       name: 'Олег',
       msgs: [],
-      pinned: {},
-    },
-    {
-      id: 2,
-      name: 'Daria',
-      msgs: [
-        {user: 'Daria', body: 'Lorem Ipsum is simply dummy t'},
-        {user: 'Daria', body: 'een the industrys standard dummy text '},
-        {user: 'Daria', body: 'typesetting industry. Lo'},
-        {user: 'fakeUser1', body: 'ext of the printing and '},
-        {user: 'fakeUser1', body: 'rem Ipsum has b'},
-        {user: 'fakeUser1', body: 'ever since the 1500s, when an unknown'},
-        {user: 'Daria', body: 'printer took a galley of type'},
-        {user: 'Daria', body: 'and scrambled it to make'},
-        {user: 'fakeUser1', body: 'a type specimen book. It'},
-        {user: 'Daria', body: 'has survived not only five centuries,'},
-        {
-          user: 'fakeUser1',
-          body: 'ut also the leap into electronic typesetting,',
-        },
-        {
-          user: 'Daria',
-          body: 'b remaining essentially unchanged. It was popularised ',
-        },
-        {
-          user: 'fakeUser1',
-          body: ' in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,',
-        },
-        {user: 'fakeUser1', body: ' and more recently with desktop '},
-        {
-          user: 'Daria',
-          body: ' publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-        },
-      ],
-      pinned: {},
+      pinnedCache: {},
+      pinned: [],
     },
   ],
   find: [],
@@ -49,7 +35,10 @@ const roomsSlice = createSlice({
   name: 'rooms',
   initialState,
   reducers: {
-    addMsg: (state, action) => {
+    addMsg: (
+      state: RoomSliceState,
+      action: PayloadAction<{user: string; body: string}>,
+    ) => {
       for (let room of state.data) {
         if (room.id === action.payload.id) {
           room.msgs.push({
@@ -61,8 +50,11 @@ const roomsSlice = createSlice({
         }
       }
     },
-    addImgs: (state, action) => {
-      const items = [];
+    addImgs: (
+      state: RoomSliceState,
+      action: PayloadAction<{attaches: string[]; user: string}>,
+    ) => {
+      const items: Msg[] = [];
 
       for (let index = 0; index < action.payload.attaches.length; index++) {
         items.push({
@@ -79,29 +71,49 @@ const roomsSlice = createSlice({
         }
       }
     },
-    togglePinned: (state, action) => {
+    togglePinned: (
+      state: RoomSliceState,
+      action: PayloadAction<{key: number; roomId: number}>,
+    ) => {
       for (let room of state.data) {
         if (action.payload.roomId === room.id) {
-          const item = room.pinned[action.payload.key];
-          console.log('G', item, action.payload.key);
+          const item = room.pinnedCache[action.payload.key];
+          console.log('item', item);
           if (item) {
-            delete room.pinned[action.payload.key];
+            room.pinned = [
+              ...room.pinned.filter(
+                pinnedItem => pinnedItem.timestamp != action.payload.key,
+              ),
+            ];
+            delete room.pinnedCache[action.payload.key];
           } else {
-            room.pinned[action.payload.key] = action.payload.body;
+            room.pinnedCache[action.payload.key] = action.payload.body;
+            room.pinned.push({
+              timestamp: action.payload.key,
+              body: action.payload.body,
+            });
+            room.pinned.sort((a, b) => b.timestamp - a.timestamp);
           }
           break;
         }
       }
     },
-    createChat: (state, action) => {
+    createChat: (
+      state: RoomSliceState,
+      action: PayloadAction<{id: number; name: string}>,
+    ) => {
       state.data.push({
         id: action.payload.id,
         name: action.payload.name,
         msgs: [],
-        pinned: {},
+        pinnedCache: {},
+        pinned: [],
       });
     },
-    findActivities: (state, action) => {
+    findActivities: (
+      state: RoomSliceState,
+      action: PayloadAction<{filter: string}>,
+    ) => {
       if (action.payload.filter === '') {
         state.find = [];
         return;

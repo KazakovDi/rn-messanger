@@ -1,8 +1,20 @@
-import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import React, {ReactElement} from 'react';
+import {TouchableOpacity, View} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-
-const NavBar = ({leftBtn, leftOnPress, rightBtn, rightOnPress, children}) => {
+interface INavBar {
+  leftBtn?: ReactElement;
+  rightBtn?: ReactElement;
+  leftOnPress?: () => void;
+  rightOnPress?: () => void;
+  children?: ReactElement;
+}
+const NavBar = ({
+  leftBtn,
+  leftOnPress,
+  rightBtn,
+  rightOnPress,
+  children,
+}: INavBar) => {
   return (
     <View
       style={{

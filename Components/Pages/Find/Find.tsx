@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {View, FlatList, TouchableOpacity, Text, TextInput} from 'react-native';
 import {findActivities} from '../../../store/Room.slice';
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
-import {Input, Button} from '@rneui/themed';
 import InterestItem from '../../UI/InterestItem/InterestItem';
 import NavBar from '../../Functional/NavBar/NavBar';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
@@ -26,6 +25,8 @@ const Find = ({navigation}) => {
         <NavBar
           leftBtn={faArrowLeft}
           leftOnPress={() => {
+            setFilterValue('');
+            dispatch(findActivities({filter: ''}));
             navigation.navigate('Home');
           }}>
           <TextInput

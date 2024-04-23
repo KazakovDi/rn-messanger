@@ -3,26 +3,22 @@ import {Text, TouchableOpacity, View} from 'react-native';
 
 const PinnedMessages = ({data, onPress, keys, pinned}) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  console.log('data', data, keys);
-  console.log('PinnedMessages', pinned, Object.values(pinned));
-  for (let key in pinned) {
-    console.log('key', key, pinned[key]);
-  }
+  console.log('pinned', pinned);
   return (
     <View style={{backgroundColor: 'red'}}>
-      {data[activeIndex] ? (
+      {pinned[activeIndex] ? (
         <TouchableOpacity
           onPress={() => {
-            if (activeIndex === data.length - 1) setActiveIndex(0);
+            if (activeIndex === pinned.length - 1) setActiveIndex(0);
             else setActiveIndex(state => state + 1);
             console.log('keys', keys, activeIndex);
-            onPress(keys[activeIndex]);
+            onPress(pinned[activeIndex].timestamp);
           }}>
           <View>
             <Text style={{fontWeight: 700}}>
               Закреплённое сообщение {activeIndex + 1}
             </Text>
-            <Text numberOfLines={1}>{data[activeIndex]}</Text>
+            <Text numberOfLines={1}>{pinned[activeIndex].body}</Text>
           </View>
         </TouchableOpacity>
       ) : null}
