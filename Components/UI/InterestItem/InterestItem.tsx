@@ -1,8 +1,9 @@
 import React from 'react';
-import {Button, ThemeProvider, Avatar} from '@rneui/themed';
+import {Avatar} from '@rneui/themed';
 import {View, Text} from 'react-native';
-
+import {useTheme} from '@rneui/themed';
 const InterestItem = ({title, msg}) => {
+  const {theme} = useTheme();
   return (
     <View
       style={{
@@ -18,8 +19,12 @@ const InterestItem = ({title, msg}) => {
         containerStyle={{backgroundColor: '#6733b9'}}
       />
       <View style={{marginLeft: 15, paddingVertical: 6}}>
-        <Text style={{fontWeight: 700}}>{title}</Text>
-        <Text numberOfLines={1}>{msg}</Text>
+        <Text style={{color: theme.colors.primary, fontWeight: '700'}}>
+          {title}
+        </Text>
+        <Text style={{color: theme.colors.primary}} numberOfLines={1}>
+          {msg}
+        </Text>
       </View>
     </View>
   );

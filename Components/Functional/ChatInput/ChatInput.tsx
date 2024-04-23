@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {View, Text, TouchableOpacity, FlatList, TextInput} from 'react-native';
 import RBSheet from '@poki_san/react-native-bottom-sheet';
+import {useTheme} from '@rneui/themed';
 
 import {faCircleArrowRight} from '@fortawesome/free-solid-svg-icons/faCircleArrowRight';
 import {faMicrophone} from '@fortawesome/free-solid-svg-icons/faMicrophone';
@@ -14,6 +15,7 @@ import {pick} from 'react-native-document-picker';
 const ChatInput = ({onSendMsg}) => {
   const [inputValue, setInputValue] = useState('');
   const [attachedPhotos, setAttachedPhotos] = useState([]);
+  const {theme} = useTheme();
 
   const bottomSheetRef = useRef(null);
   return (
@@ -21,7 +23,7 @@ const ChatInput = ({onSendMsg}) => {
       style={{
         paddingVertical: 5,
         display: 'flex',
-        backgroundColor: 'red',
+        backgroundColor: theme.colors.bg,
         flexDirection: 'row',
         alignItems: 'flex-end',
       }}>
@@ -29,7 +31,11 @@ const ChatInput = ({onSendMsg}) => {
         onPress={() => {
           bottomSheetRef.current.open();
         }}>
-        <FontAwesomeIcon size={30} icon={faPaperclip} />
+        <FontAwesomeIcon
+          color={theme.colors.icon}
+          size={30}
+          icon={faPaperclip}
+        />
       </TouchableOpacity>
       <TextInput
         style={{maxHeight: 110, paddingVertical: 0, width: '80%'}}
@@ -47,6 +53,7 @@ const ChatInput = ({onSendMsg}) => {
           setInputValue('');
         }}>
         <FontAwesomeIcon
+          color={theme.colors.icon}
           size={30}
           icon={!!inputValue ? faCircleArrowRight : faMicrophone}
         />

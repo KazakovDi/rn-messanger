@@ -1,16 +1,16 @@
 import React from 'react';
-import {Button} from '@rneui/themed';
-
+import {useTheme} from '@rneui/themed';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {TouchableOpacity, View} from 'react-native';
 const FloatingBtn = ({icon, pos, onPress}) => {
+  const {theme} = useTheme();
   return (
     <TouchableOpacity onPress={onPress}>
       <View
         style={{
           width: 64,
           height: 64,
-          backgroundColor: 'red',
+          backgroundColor: theme.colors.primary,
           borderRadius: 50,
           display: 'flex',
           alignItems: 'center',
@@ -18,7 +18,7 @@ const FloatingBtn = ({icon, pos, onPress}) => {
           position: 'absolute',
           ...pos,
         }}>
-        <FontAwesomeIcon icon={icon} />
+        <FontAwesomeIcon color={theme.colors.bg} icon={icon} />
       </View>
     </TouchableOpacity>
   );

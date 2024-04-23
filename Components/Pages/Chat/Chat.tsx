@@ -1,10 +1,9 @@
 import React, {useEffect, useRef} from 'react';
 import {View, Text, TouchableOpacity, FlatList, TextInput} from 'react-native';
-import {Avatar} from '@rneui/themed';
+import {Avatar, useTheme} from '@rneui/themed';
 
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 // import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import ChatInput from '../../Functional/ChatInput/ChatInput';
 import Message from '../../UI/Message';
@@ -16,7 +15,7 @@ import PinnedMessages from '../../Functional/PinnedMessages/PinnedMessages';
 import NavBar from '../../Functional/NavBar/NavBar';
 const Chat = ({navigation: {navigate, goBack}, route}) => {
   const dispatch = useAppDispatch();
-
+  const {theme} = useTheme();
   const [title, msgs, roomId, pinned] = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
       if (room.id === route.params.roomId)
@@ -34,7 +33,7 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
     listRef.current.scrollToEnd();
   };
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: theme.colors.chatBg}}>
       <View
         style={{
           display: 'flex',

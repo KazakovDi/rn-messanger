@@ -1,8 +1,9 @@
 import React from 'react';
 import {View, Text, Image, Touchable, TouchableOpacity} from 'react-native';
 
-import {useAppDispatch} from '../../store/store';
+import {useTheme} from '@rneui/themed';
 const Message = ({isUser, type, uri, body, onLongPress}) => {
+  const {theme} = useTheme();
   return (
     <TouchableOpacity delayPressIn={500} onLongPress={onLongPress}>
       <View
@@ -15,7 +16,9 @@ const Message = ({isUser, type, uri, body, onLongPress}) => {
         }}>
         <View
           style={{
-            backgroundColor: !isUser ? 'red' : 'blue',
+            backgroundColor: !isUser
+              ? theme.colors.msgOpposite
+              : theme.colors.msg,
             width: '80%',
             paddingHorizontal: 5,
             paddingVertical: 10,
