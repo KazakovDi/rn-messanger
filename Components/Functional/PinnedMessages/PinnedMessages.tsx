@@ -1,17 +1,26 @@
 import React, {useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
-
-const PinnedMessages = ({data, onPress, keys, pinned}) => {
+import {TimestampItem} from '../../../store/Room.slice';
+interface IPinnedMessages {
+  pinned: TimestampItem[];
+  onPress: (arg: number) => void;
+}
+const PinnedMessages = ({onPress, pinned}: IPinnedMessages) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  console.log('pinned', pinned);
   return (
-    <View style={{backgroundColor: 'red'}}>
+    <View
+      style={{
+        position: 'absolute',
+        bottom: -30,
+        zIndex: 100,
+        width: '100%',
+        backgroundColor: 'red',
+      }}>
       {pinned[activeIndex] ? (
         <TouchableOpacity
           onPress={() => {
             if (activeIndex === pinned.length - 1) setActiveIndex(0);
             else setActiveIndex(state => state + 1);
-            console.log('keys', keys, activeIndex);
             onPress(pinned[activeIndex].timestamp);
           }}>
           <View>

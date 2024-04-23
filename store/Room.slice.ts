@@ -15,6 +15,10 @@ interface RoomItem {
   };
   pinned: {timestamp: number; body: string}[];
 }
+export interface TimestampItem {
+  timestamp: number;
+  body: string;
+}
 interface RoomSliceState {
   data: RoomItem[];
   find: RoomItem[];

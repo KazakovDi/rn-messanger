@@ -27,7 +27,7 @@ const Find = ({navigation}) => {
           leftOnPress={() => {
             setFilterValue('');
             dispatch(findActivities({filter: ''}));
-            navigation.navigate('Home');
+            navigation.goBack();
           }}>
           <TextInput
             value={filterValue}

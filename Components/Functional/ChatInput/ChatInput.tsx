@@ -12,7 +12,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 import {pick} from 'react-native-document-picker';
 const ChatInput = ({onSendMsg}) => {
-  console.log('pick', pick);
   const [inputValue, setInputValue] = useState('');
   const [attachedPhotos, setAttachedPhotos] = useState([]);
 
@@ -33,7 +32,7 @@ const ChatInput = ({onSendMsg}) => {
         <FontAwesomeIcon size={30} icon={faPaperclip} />
       </TouchableOpacity>
       <TextInput
-        style={{maxHeight: 110, width: '80%'}}
+        style={{maxHeight: 110, paddingVertical: 0, width: '80%'}}
         multiline
         placeholder="отправить"
         value={inputValue}

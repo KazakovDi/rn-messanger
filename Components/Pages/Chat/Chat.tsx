@@ -14,7 +14,7 @@ import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
 import {addMsg, addImgs, togglePinned} from '../../../store/Room.slice';
 import PinnedMessages from '../../Functional/PinnedMessages/PinnedMessages';
 import NavBar from '../../Functional/NavBar/NavBar';
-const Chat = ({navigation: {navigate}, route}) => {
+const Chat = ({navigation: {navigate, goBack}, route}) => {
   const dispatch = useAppDispatch();
 
   const [title, msgs, roomId, pinned] = useAppSelector((state: RootState) => {
@@ -34,22 +34,21 @@ const Chat = ({navigation: {navigate}, route}) => {
     listRef.current.scrollToEnd();
   };
   return (
-    <View style={{display: 'flex', flex: 1}}>
+    <View style={{flex: 1}}>
       <View
         style={{
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          paddingHorizontal: 10,
+          position: 'relative',
         }}>
-        <NavBar leftBtn={faArrowLeft} leftOnPress={() => navigate('Home')}>
-          <TouchableOpacity onPress={() => navigate('Info')}>
+        <NavBar leftBtn={faArrowLeft} leftOnPress={goBack}>
+          <TouchableOpacity onPress={() => navigate('Info', {roomId})}>
             <View
               style={{
                 display: 'flex',
                 flexDirection: 'row',
                 alignContent: 'center',
-                paddingVertical: 10,
                 paddingLeft: 10,
               }}>
               <Avatar
@@ -65,25 +64,22 @@ const Chat = ({navigation: {navigate}, route}) => {
             </View>
           </TouchableOpacity>
         </NavBar>
-      </View>
-      <PinnedMessages
-        onPress={key => {
-          // console.log('index', index);
-          // listRef.current.scrollToIndex(Number(index));
-          for (let index = 0; index < msgs.length; index++) {
-            if (msgs[index].timestamp == key) {
-              console.log('index', index);
-              listRef.current.scrollToIndex({index});
-              break;
+        <PinnedMessages
+          onPress={key => {
+            for (let index = 0; index < msgs.length; index++) {
+              if (msgs[index].timestamp == key) {
+                listRef.current.scrollToIndex({index});
+                break;
+              }
             }
-          }
-        }}
-        data={Object.values(pinned)}
-        keys={Object.keys(pinned)}
-        pinned={pinned}
-      />
-      <View style={{flexShrink: 2, marginHorizontal: 10}}>
+          }}
+          pinned={pinned}
+        />
+      </View>
+
+      <View style={{flex: 1, flexShrink: 2, marginHorizontal: 10}}>
         <FlatList
+          style={{paddingTop: 25}}
           ref={listRef}
           keyExtractor={(item, index) => item.timestamp}
           data={msgs}
@@ -108,23 +104,6 @@ const Chat = ({navigation: {navigate}, route}) => {
           })}
         />
       </View>
-      {/* <TouchableOpacity
-        onPress={() => {
-          request(PERMISSIONS.ANDROID.CAMERA).then(res => {
-            takePicture().then(res => {
-              // bottomSheetRef.current.close();
-              console.log('res', res);
-            });
-          });
-        }}
-        onLongPress={() => {
-          request(PERMISSIONS.ANDROID.CAMERA).then(res => {
-            record();
-          });
-        }}
-        delayLongPress={500}>
-        <Text>Media</Text>
-      </TouchableOpacity> */}
       <ChatInput onSendMsg={sendMsgHandler} />
     </View>
   );

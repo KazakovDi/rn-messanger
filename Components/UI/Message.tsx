@@ -16,7 +16,7 @@ const Message = ({isUser, type, uri, body, onLongPress}) => {
         <View
           style={{
             backgroundColor: !isUser ? 'red' : 'blue',
-            width: '50%',
+            width: '80%',
             paddingHorizontal: 5,
             paddingVertical: 10,
             borderRadius: 10,
