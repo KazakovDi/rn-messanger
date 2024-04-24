@@ -26,23 +26,30 @@ const config = {
   },
 };
 const theme = createTheme({
+  mode: 'light',
   lightColors: {
     primary: '#222831',
+    primaryLight: '#56595c',
+    secondary: '#fff',
     bg: '#fff',
     msg: '#00ADB5',
     msgOpposite: '#F38181',
     header: '#3490DE',
     chatBg: '#E3FDFD',
     icon: '#c7bfbf',
+    pinnedBg: '#76ABAE',
   },
   darkColors: {
     primary: '#fff',
+    primaryLight: '#56595c',
+    secondary: '#222831',
     bg: '#222831',
     msg: '#393E46',
     msgOpposite: '#364F6B',
     header: '#40514E',
     chatBg: '#3E4149',
     icon: '#c3c3c3',
+    pinnedBg: '#31363F',
   },
 });
 function App(): React.JSX.Element {

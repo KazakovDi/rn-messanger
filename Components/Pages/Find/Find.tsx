@@ -20,7 +20,7 @@ const Find = ({navigation}) => {
     }, 700);
   }, [filterValue]);
   return (
-    <View style={{flex: 1, paddingHorizontal: 5}}>
+    <View style={{flex: 1}}>
       <View style={{display: 'flex', flexDirection: 'row'}}>
         <NavBar
           leftBtn={faArrowLeft}
@@ -35,7 +35,6 @@ const Find = ({navigation}) => {
               setFilterValue(e);
             }}
             placeholder="Поиск"
-            style={{borderWidth: 1, borderColor: 'red'}}
           />
         </NavBar>
       </View>
@@ -54,7 +53,9 @@ const Find = ({navigation}) => {
             />
           </TouchableOpacity>
         )}
-        data={finded}></FlatList>
+        data={finded}
+        style={{paddingHorizontal: 5, marginTop: 10}}
+      />
     </View>
   );
 };

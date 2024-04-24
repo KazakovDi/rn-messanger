@@ -1,15 +1,18 @@
 import React from 'react';
 import {View, Text, FlatList, TouchableOpacity} from 'react-native';
-import {Button, ThemeProvider, Avatar} from '@rneui/themed';
+import {useTheme, Avatar} from '@rneui/themed';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import InfoItem from '../../UI/InfoItem/InfoItem';
 import NavBar from '../../Functional/NavBar/NavBar';
 import {RootState, useAppSelector} from '../../../store/store';
+
 const dataUser = [
   {body: '+367676437', key: 1, description: 'Телефон'},
   {body: '@CoolGuy', key: 2, description: 'Имя пользователя'},
 ];
 const ActivityInfo = ({navigation, route}) => {
+  const {theme} = useTheme();
+
   const title = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
       if (room.id === route.params.roomId) {
@@ -18,11 +21,7 @@ const ActivityInfo = ({navigation, route}) => {
     }
   });
   return (
-    <View
-      style={{
-        marginHorizontal: 20,
-        marginTop: 20,
-      }}>
+    <View>
       <NavBar
         leftBtn={faArrowLeft}
         leftOnPress={() => {
@@ -37,8 +36,10 @@ const ActivityInfo = ({navigation, route}) => {
             containerStyle={{backgroundColor: '#6733b9'}}
           />
           <View style={{marginLeft: 15, paddingVertical: 6}}>
-            <Text style={{fontWeight: 700}}>{title}</Text>
-            <Text style={{color: '#c7c7c7'}}>Был(а) недавно</Text>
+            <Text style={{color: theme.colors.primary, fontWeight: '700'}}>
+              {title}
+            </Text>
+            <Text style={{color: theme.colors.primary}}>Был(а) недавно</Text>
           </View>
         </View>
       </NavBar>

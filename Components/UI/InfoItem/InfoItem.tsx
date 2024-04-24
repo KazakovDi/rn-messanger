@@ -1,7 +1,11 @@
 import React, {useState} from 'react';
 import {View, Switch, Text} from 'react-native';
+import {useTheme, Avatar} from '@rneui/themed';
+
 const InfoItem = ({body, description, onToggle}) => {
   const [isEnabled, setIsEnabled] = useState(true);
+  const {theme} = useTheme();
+
   return (
     <View
       style={{
@@ -11,8 +15,15 @@ const InfoItem = ({body, description, onToggle}) => {
         justifyContent: 'space-between',
       }}>
       <View>
-        <Text style={{fontWeight: 500, marginVertical: 4}}>{body}</Text>
-        <Text style={{color: '#000'}}>{description}</Text>
+        <Text
+          style={{
+            color: theme.colors.primary,
+            fontWeight: '500',
+            marginVertical: 4,
+          }}>
+          {body}
+        </Text>
+        <Text style={{color: theme.colors.primaryLight}}>{description}</Text>
       </View>
       {onToggle ? (
         <Switch

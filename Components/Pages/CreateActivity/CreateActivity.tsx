@@ -1,5 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {FlatList, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  Button,
+  FlatList,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import IconButton from '../../Functional/IconButton/IconButton';
 import {faUsers} from '@fortawesome/free-solid-svg-icons/faUsers';
 import {faBullhorn} from '@fortawesome/free-solid-svg-icons/faBullhorn';
@@ -14,6 +21,8 @@ import RBSheet from '@poki_san/react-native-bottom-sheet';
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
 import {createChat} from '../../../store/Room.slice';
 import {linkRoom} from '../../../store/User.slice';
+import {useTheme} from '@rneui/themed';
+
 const CreateActivity = ({navigation}) => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state: RootState) => state.rooms.data);
@@ -21,6 +30,7 @@ const CreateActivity = ({navigation}) => {
   const bottomSheetRef = useRef();
   const nameRef = useRef();
   const telRef = useRef();
+  const {theme} = useTheme();
   useEffect(() => {
     request(PERMISSIONS.ANDROID.READ_CONTACTS).then(() => {
       Contacts.getAll().then(res => {
@@ -69,28 +79,54 @@ const CreateActivity = ({navigation}) => {
       <RBSheet
         animationType="slide"
         openDuration={500}
-        height={500}
+        height={350}
         closeOnDragDown={true}
         dragFromTopOnly={true}
+        customStyles={{
+          container: {
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+            backgroundColor: theme.colors.bg,
+          },
+        }}
         ref={bottomSheetRef}>
-        <View />
+        <Text
+          style={{
+            fontSize: 26,
+            fontWeight: 'bold',
+            color: theme.colors.primary,
+          }}>
+          Новый контакт
+        </Text>
+        <Text style={{color: theme.colors.icon}}>Имя</Text>
         <TextInput
           onChangeText={e => (nameRef.current.value = e)}
           ref={nameRef}
           inputMode="text"
           required
-          style={{color: '#000'}}
+          style={{
+            marginVertical: 5,
+            borderWidth: 1,
+            borderColor: theme.colors.icon,
+            color: '#000',
+          }}
           placeholder="Имя"
         />
+        <Text style={{color: theme.colors.icon}}>Номер телефона</Text>
         <TextInput
           onChangeText={e => (telRef.current.value = e)}
           ref={telRef}
           inputMode="tel"
           required
-          style={{color: '#000'}}
+          style={{
+            marginVertical: 5,
+            borderWidth: 1,
+            borderColor: theme.colors.icon,
+            color: '#000',
+          }}
           placeholder="Телефон"
         />
-        <TouchableOpacity
+        <Button
           onPress={() => {
             request(PERMISSIONS.ANDROID.WRITE_CONTACTS).then(res => {
               console.log('res', nameRef.current.value, telRef.current.value);
@@ -101,9 +137,9 @@ const CreateActivity = ({navigation}) => {
                 .then(res => console.log('res', res))
                 .catch(err => console.log('err', err));
             });
-          }}>
-          <Text style={{color: 'red'}}>Добавить контакт</Text>
-        </TouchableOpacity>
+          }}
+          title={'Добавить контакт'}
+        />
       </RBSheet>
     </View>
   );

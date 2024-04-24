@@ -19,7 +19,9 @@ const InterestsList = ({navigation}) => {
           />
         </TouchableOpacity>
       )}
-      data={rooms}></FlatList>
+      data={rooms}
+      style={{paddingHorizontal: 5, marginTop: 10}}
+    />
   );
 };
 

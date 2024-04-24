@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, TouchableOpacity, FlatList, TextInput} from 'react-native';
 import {Avatar, useTheme} from '@rneui/themed';
 
@@ -16,6 +16,7 @@ import NavBar from '../../Functional/NavBar/NavBar';
 const Chat = ({navigation: {navigate, goBack}, route}) => {
   const dispatch = useAppDispatch();
   const {theme} = useTheme();
+
   const [title, msgs, roomId, pinned] = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
       if (room.id === route.params.roomId)
@@ -57,7 +58,7 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
                 containerStyle={{backgroundColor: '#6733b9'}}
               />
               <View style={{marginLeft: 15, paddingVertical: 6}}>
-                <Text style={{fontWeight: 700}}>{title}</Text>
+                <Text style={{fontWeight: '700'}}>{title}</Text>
                 <Text>Был(а) недавно</Text>
               </View>
             </View>
@@ -78,7 +79,7 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
 
       <View style={{flex: 1, flexShrink: 2, marginHorizontal: 10}}>
         <FlatList
-          style={{paddingTop: 25}}
+          style={{paddingTop: 35}}
           ref={listRef}
           keyExtractor={(item, index) => item.timestamp}
           data={msgs}

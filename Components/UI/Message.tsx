@@ -32,7 +32,7 @@ const Message = ({isUser, type, uri, body, onLongPress}) => {
               style={{width: '100%', height: 350}}
             />
           ) : (
-            <Text>{body}</Text>
+            <Text style={{color: theme.colors.primary}}>{body}</Text>
           )}
         </View>
       </View>
