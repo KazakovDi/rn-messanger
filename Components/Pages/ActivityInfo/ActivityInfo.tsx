@@ -5,6 +5,7 @@ import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import InfoItem from '../../UI/InfoItem/InfoItem';
 import NavBar from '../../Functional/NavBar/NavBar';
 import {RootState, useAppSelector} from '../../../store/store';
+import MediaList from '../../Functional/MediaList/MediaList';
 
 const dataUser = [
   {body: '+367676437', key: 1, description: 'Телефон'},
@@ -12,11 +13,10 @@ const dataUser = [
 ];
 const ActivityInfo = ({navigation, route}) => {
   const {theme} = useTheme();
-
-  const title = useAppSelector((state: RootState) => {
+  const [title, mediaData] = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
       if (room.id === route.params.roomId) {
-        return room.name;
+        return [room.name, room.media];
       }
     }
   });
@@ -60,6 +60,7 @@ const ActivityInfo = ({navigation, route}) => {
           }}
         />
       </View>
+      <MediaList data={mediaData} />
     </View>
   );
 };

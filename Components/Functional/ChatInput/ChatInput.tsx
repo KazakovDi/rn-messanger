@@ -103,7 +103,10 @@ const ChatInput = ({onSendMsg}) => {
                 type: ['image/jpeg', 'video/mp4', 'video/mpeg', 'image/png'],
                 mode: 'open',
               }).then(res => {
-                const data = res.map(item => ({type: 'img', uri: item.uri}));
+                const data = res.map(item => {
+                  console.log(item);
+                  return {type: item.type, uri: item.uri};
+                });
                 setAttachedPhotos(data);
                 bottomSheetRef.current.close();
               });

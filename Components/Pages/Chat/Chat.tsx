@@ -10,7 +10,7 @@ import Message from '../../UI/Message';
 // import {RNCamera} from 'react-native-camera';
 
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
-import {addMsg, addImgs, togglePinned} from '../../../store/Room.slice';
+import {addMsg, addMedia, togglePinned} from '../../../store/Room.slice';
 import PinnedMessages from '../../Functional/PinnedMessages/PinnedMessages';
 import NavBar from '../../Functional/NavBar/NavBar';
 const Chat = ({navigation: {navigate, goBack}, route}) => {
@@ -23,14 +23,16 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
         return [room.name, room.msgs, room.id, room.pinned];
     }
   });
+  console.log('msgs', msgs);
   const User = useAppSelector((state: RootState) => state.user.name);
   const listRef = useRef(null);
   useEffect(() => {
     listRef.current.scrollToEnd();
   }, []);
   const sendMsgHandler = (msg: string, attached) => {
+    console.log('attach', attached);
     dispatch(addMsg({user: User, body: msg, id: roomId}));
-    dispatch(addImgs({user: User, roomId: roomId, attaches: attached}));
+    dispatch(addMedia({user: User, roomId: roomId, attaches: attached}));
     listRef.current.scrollToEnd();
   };
   return (

@@ -6,12 +6,8 @@ const initialState = {
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    linkRoom: (state, action) => {
-      state.rooms.push(action.payload.id);
-    },
-  },
+  reducers: {},
 });
 
-export const {linkRoom} = userSlice.actions;
+// export const {linkRoom} = userSlice.actions;
 export const userReducer = userSlice.reducer;

@@ -14,6 +14,7 @@ interface RoomItem {
     [key: number]: string;
   };
   pinned: {timestamp: number; body: string}[];
+  media: string[];
 }
 export interface TimestampItem {
   timestamp: number;
@@ -31,6 +32,7 @@ const initialState: RoomSliceState = {
       msgs: [],
       pinnedCache: {},
       pinned: [],
+      media: [],
     },
   ],
   find: [],
@@ -54,23 +56,25 @@ const roomsSlice = createSlice({
         }
       }
     },
-    addImgs: (
+    addMedia: (
       state: RoomSliceState,
       action: PayloadAction<{attaches: string[]; user: string}>,
     ) => {
       const items: Msg[] = [];
-
+      const mediaBuffer: string[] = [];
       for (let index = 0; index < action.payload.attaches.length; index++) {
         items.push({
-          type: 'img',
-          uri: action.payload.attaches[index],
+          type: action.payload.attaches[index].type,
+          uri: action.payload.attaches[index].uri,
           user: action.payload.user,
           timestamp: Date.now(),
         });
+        mediaBuffer.push(action.payload.attaches[index].uri);
       }
       for (let room of state.data) {
         if (room.id === action.payload.roomId) {
           room.msgs.push(...items);
+          room.media.push(...mediaBuffer);
           break;
         }
       }
@@ -112,6 +116,7 @@ const roomsSlice = createSlice({
         msgs: [],
         pinnedCache: {},
         pinned: [],
+        media: [],
       });
     },
     findActivities: (
@@ -130,6 +135,6 @@ const roomsSlice = createSlice({
   },
 });
 
-export const {addMsg, addImgs, togglePinned, createChat, findActivities} =
+export const {addMsg, addMedia, togglePinned, createChat, findActivities} =
   roomsSlice.actions;
 export const roomsReducer = roomsSlice.reducer;

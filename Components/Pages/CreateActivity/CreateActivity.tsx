@@ -63,7 +63,6 @@ const CreateActivity = ({navigation}) => {
               }
               const newRoomId = Math.random();
               dispatch(createChat({name: item.displayName, id: newRoomId}));
-              dispatch(linkRoom({id: newRoomId}));
               navigation.navigate('Chat', {roomId: newRoomId});
             }}>
             <InterestItem msg="" title={item.displayName} />

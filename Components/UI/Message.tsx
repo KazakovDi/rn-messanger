@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {View, Text, Image, Touchable, TouchableOpacity} from 'react-native';
-
+import Video, {VideoRef} from 'react-native-video';
 import {useTheme} from '@rneui/themed';
 const Message = ({isUser, type, uri, body, onLongPress}) => {
+  console.log('supirtype', type, uri);
   const {theme} = useTheme();
+  const videoRef = useRef<VideoRef>(null);
   return (
     <TouchableOpacity delayPressIn={500} onLongPress={onLongPress}>
       <View
@@ -24,12 +26,21 @@ const Message = ({isUser, type, uri, body, onLongPress}) => {
             paddingVertical: 10,
             borderRadius: 10,
           }}>
-          {type === 'img' ? (
+          {type === 'image/jpeg' ? (
             <Image
               source={{
-                uri: uri.uri,
+                uri: uri,
               }}
               style={{width: '100%', height: 350}}
+            />
+          ) : type === 'video/mp4' ? (
+            <Video
+              // Can be a URL or a local file.
+              source={{uri: uri}}
+              // Store reference
+              ref={videoRef}
+              style={{width: '100%', height: 350}}
+              // Callback when remote video is buffering
             />
           ) : (
             <Text style={{color: theme.colors.primary}}>{body}</Text>
