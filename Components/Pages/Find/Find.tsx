@@ -5,7 +5,6 @@ import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
 import InterestItem from '../../UI/InterestItem/InterestItem';
 import NavBar from '../../Functional/NavBar/NavBar';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
-
 const Find = ({navigation}) => {
   const dispatch = useAppDispatch();
   const finded = useAppSelector((state: RootState) => state.rooms.find);

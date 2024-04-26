@@ -32,9 +32,9 @@ const ChatsList = ({navigation}) => {
       </View>
       <InterestsList navigation={navigation} />
       <FloatingBtn
-        onPress={() => navigation.navigate('Create')}
         pos={{right: 10, bottom: 15}}
         icon={faPen}
+        Press={() => navigation.navigate('Create')}
       />
     </View>
   );

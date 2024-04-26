@@ -8,6 +8,7 @@ interface Msg {
 }
 interface RoomItem {
   id: number;
+  type: 'chat' | 'group_chat' | 'chanel';
   name: string;
   msgs: Msg[];
   pinnedCache: {
@@ -28,6 +29,7 @@ const initialState: RoomSliceState = {
   data: [
     {
       id: 1,
+      type: 'chat',
       name: 'Олег',
       msgs: [],
       pinnedCache: {},
@@ -112,6 +114,7 @@ const roomsSlice = createSlice({
     ) => {
       state.data.push({
         id: action.payload.id,
+        type: 'chat',
         name: action.payload.name,
         msgs: [],
         pinnedCache: {},

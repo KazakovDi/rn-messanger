@@ -20,6 +20,7 @@ const ActivityInfo = ({navigation, route}) => {
       }
     }
   });
+  console.log('activity', mediaData);
   return (
     <View>
       <NavBar

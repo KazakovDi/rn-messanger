@@ -11,6 +11,7 @@ import IconButton from '../../Functional/IconButton/IconButton';
 import {faUsers} from '@fortawesome/free-solid-svg-icons/faUsers';
 import {faBullhorn} from '@fortawesome/free-solid-svg-icons/faBullhorn';
 import {faUserPlus} from '@fortawesome/free-solid-svg-icons/faUserPlus';
+import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 
 import FloatingBtn from '../../Functional/FloatIcon/FloatingBtn';
 
@@ -20,26 +21,64 @@ import InterestItem from '../../UI/InterestItem/InterestItem';
 import RBSheet from '@poki_san/react-native-bottom-sheet';
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
 import {createChat} from '../../../store/Room.slice';
-import {linkRoom} from '../../../store/User.slice';
 import {useTheme} from '@rneui/themed';
+import NavBar from '../../Functional/NavBar/NavBar';
+import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons/faMagnifyingGlass';
 
 const CreateActivity = ({navigation}) => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state: RootState) => state.rooms.data);
   const [contactList, setContact] = useState([]);
+  const [filterValue, setFilterValue] = useState('');
+  const [isActive, setIsActive] = useState(false);
+  console.log('isActive', isActive);
   const bottomSheetRef = useRef();
   const nameRef = useRef();
   const telRef = useRef();
+  const filterInputRef = useRef();
   const {theme} = useTheme();
   useEffect(() => {
-    request(PERMISSIONS.ANDROID.READ_CONTACTS).then(() => {
-      Contacts.getAll().then(res => {
-        setContact(res);
+    if (filterValue === '') {
+      request(PERMISSIONS.ANDROID.READ_CONTACTS).then(() => {
+        Contacts.getAll().then(res => {
+          const value = res.slice(0, 10);
+          setContact(value);
+        });
       });
-    });
-  }, []);
+    } else {
+      const id = setTimeout(() => {
+        const reg = new RegExp(filterValue, 'gi');
+        const offers = contactList.filter(item => {
+          return reg.test(item.displayName);
+        });
+        setContact(offers);
+      }, 500);
+      return () => {
+        clearTimeout(id);
+      };
+    }
+  }, [filterValue]);
   return (
     <View style={{flex: 1}}>
+      <NavBar
+        leftBtn={faArrowLeft}
+        leftOnPress={isActive ? () => setIsActive(false) : navigation.goBack}
+        rightBtn={isActive ? null : faMagnifyingGlass}
+        rightOnPress={() => {
+          // console.log('tur');
+          setIsActive(true);
+          // filterInputRef.current.focus();
+        }}>
+        <TextInput
+          value={filterValue}
+          ref={filterInputRef}
+          onChangeText={e => {
+            setFilterValue(e);
+          }}
+          style={{opacity: isActive ? 1 : 0}}
+          placeholder="Поиск"
+        />
+      </NavBar>
       <IconButton
         title={'Создать группу'}
         onPress={() => console.log('press')}
@@ -72,7 +111,7 @@ const CreateActivity = ({navigation}) => {
       />
       <FloatingBtn
         icon={faUserPlus}
-        onPress={() => bottomSheetRef.current.open()}
+        Press={() => bottomSheetRef.current.open()}
         pos={{right: 10, bottom: 15}}
       />
       <RBSheet

@@ -11,10 +11,9 @@ import {faImage} from '@fortawesome/free-solid-svg-icons/faImage';
 import {faFile} from '@fortawesome/free-solid-svg-icons/faFile';
 import {faMusic} from '@fortawesome/free-solid-svg-icons/faMusic';
 import {faFaceSmile} from '@fortawesome/free-solid-svg-icons/faFaceSmile';
-
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
-import {pick} from 'react-native-document-picker';
+import {pick, pickDirectory} from 'react-native-document-picker';
 const ChatInput = ({onSendMsg}) => {
   const [inputValue, setInputValue] = useState('');
   const [attachedPhotos, setAttachedPhotos] = useState([]);
@@ -76,6 +75,7 @@ const ChatInput = ({onSendMsg}) => {
         <TouchableOpacity
           onPress={() => {
             onSendMsg(inputValue, attachedPhotos);
+            setAttachedPhotos([]);
             setInputValue('');
           }}>
           <FontAwesomeIcon
@@ -110,6 +110,7 @@ const ChatInput = ({onSendMsg}) => {
                 setAttachedPhotos(data);
                 bottomSheetRef.current.close();
               });
+              // pickDirectory();
             }}>
             <FontAwesomeIcon size={50} icon={faImage} />
           </TouchableOpacity>

@@ -23,7 +23,6 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
         return [room.name, room.msgs, room.id, room.pinned];
     }
   });
-  console.log('msgs', msgs);
   const User = useAppSelector((state: RootState) => state.user.name);
   const listRef = useRef(null);
   useEffect(() => {
@@ -36,7 +35,13 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
     listRef.current.scrollToEnd();
   };
   return (
-    <View style={{flex: 1, backgroundColor: theme.colors.chatBg}}>
+    <View
+      style={{
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'space-between',
+        backgroundColor: theme.colors.chatBg,
+      }}>
       <View
         style={{
           display: 'flex',
@@ -66,6 +71,7 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
             </View>
           </TouchableOpacity>
         </NavBar>
+
         <PinnedMessages
           onPress={key => {
             for (let index = 0; index < msgs.length; index++) {
@@ -79,7 +85,7 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
         />
       </View>
 
-      <View style={{flex: 1, flexShrink: 2, marginHorizontal: 10}}>
+      <View style={{flex: 1, flexGrow: 2, marginHorizontal: 10}}>
         <FlatList
           style={{paddingTop: 35}}
           ref={listRef}

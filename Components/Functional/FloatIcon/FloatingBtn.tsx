@@ -1,11 +1,11 @@
 import React from 'react';
 import {useTheme} from '@rneui/themed';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {TouchableOpacity, View} from 'react-native';
-const FloatingBtn = ({icon, pos, onPress}) => {
+import {Button, TouchableOpacity, View} from 'react-native';
+const FloatingBtn = ({icon, pos, Press}) => {
   const {theme} = useTheme();
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={Press}>
       <View
         style={{
           width: 64,

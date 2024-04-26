@@ -18,6 +18,7 @@ import {Provider} from 'react-redux';
 import store from './store/store';
 import CreateActivity from './Components/Pages/CreateActivity/CreateActivity';
 import Find from './Components/Pages/Find/Find';
+
 const Stack = createNativeStackNavigator();
 
 const config = {
