@@ -11,9 +11,13 @@ interface RoomItem {
   type: 'chat' | 'group_chat' | 'chanel';
   name: string;
   msgs: Msg[];
+  description?: string;
+  link?: string;
+  privacyType?: 'public' | 'private';
   pinnedCache: {
     [key: number]: string;
   };
+  avatarUrl?: '';
   pinned: {timestamp: number; body: string}[];
   media: string[];
 }
@@ -114,8 +118,10 @@ const roomsSlice = createSlice({
     ) => {
       state.data.push({
         id: action.payload.id,
-        type: 'chat',
+        type: action.payload.type,
         name: action.payload.name,
+        description: action.payload.description,
+        avatarUrl: action.payload.avatarUrl,
         msgs: [],
         pinnedCache: {},
         pinned: [],

@@ -18,6 +18,7 @@ import {Provider} from 'react-redux';
 import store from './store/store';
 import CreateActivity from './Components/Pages/CreateActivity/CreateActivity';
 import Find from './Components/Pages/Find/Find';
+import CreateChanel from './Components/Pages/CreateChanel/CreateChanel';
 
 const Stack = createNativeStackNavigator();
 
@@ -72,6 +73,10 @@ function App(): React.JSX.Element {
                 roomId={({params}) => params.roomId}></Stack.Screen>
               <Stack.Screen name="Home" component={ChatsList}></Stack.Screen>
               <Stack.Screen name="Find" component={Find}></Stack.Screen>
+              <Stack.Screen
+                name="Create_Chanel"
+                component={CreateChanel}></Stack.Screen>
+
               <Stack.Screen
                 name="Create"
                 component={CreateActivity}></Stack.Screen>

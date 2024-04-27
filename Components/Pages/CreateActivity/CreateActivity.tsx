@@ -31,7 +31,6 @@ const CreateActivity = ({navigation}) => {
   const [contactList, setContact] = useState([]);
   const [filterValue, setFilterValue] = useState('');
   const [isActive, setIsActive] = useState(false);
-  console.log('isActive', isActive);
   const bottomSheetRef = useRef();
   const nameRef = useRef();
   const telRef = useRef();
@@ -65,9 +64,7 @@ const CreateActivity = ({navigation}) => {
         leftOnPress={isActive ? () => setIsActive(false) : navigation.goBack}
         rightBtn={isActive ? null : faMagnifyingGlass}
         rightOnPress={() => {
-          // console.log('tur');
           setIsActive(true);
-          // filterInputRef.current.focus();
         }}>
         <TextInput
           value={filterValue}
@@ -86,7 +83,7 @@ const CreateActivity = ({navigation}) => {
       />
       <IconButton
         title={'Создать канал'}
-        onPress={() => console.log('press')}
+        onPress={() => navigation.navigate('Create_Chanel')}
         icon={faBullhorn}
       />
       <FlatList
@@ -101,7 +98,13 @@ const CreateActivity = ({navigation}) => {
                 }
               }
               const newRoomId = Math.random();
-              dispatch(createChat({name: item.displayName, id: newRoomId}));
+              dispatch(
+                createChat({
+                  name: item.displayName,
+                  type: 'chat',
+                  id: newRoomId,
+                }),
+              );
               navigation.navigate('Chat', {roomId: newRoomId});
             }}>
             <InterestItem msg="" title={item.displayName} />
