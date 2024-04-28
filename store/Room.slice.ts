@@ -11,6 +11,7 @@ interface RoomItem {
   type: 'chat' | 'group_chat' | 'chanel';
   name: string;
   msgs: Msg[];
+  members?: [];
   description?: string;
   link?: string;
   privacyType?: 'public' | 'private';
@@ -141,9 +142,23 @@ const roomsSlice = createSlice({
         return reg.test(item.name);
       });
     },
+    addMembers: (state, action) => {
+      const {id, members} = action.payload;
+      for (let room of state.data) {
+        if (room.id === id) {
+          room.members.push(...members);
+        }
+      }
+    },
   },
 });
 
-export const {addMsg, addMedia, togglePinned, createChat, findActivities} =
-  roomsSlice.actions;
+export const {
+  addMsg,
+  addMedia,
+  addMembers,
+  togglePinned,
+  createChat,
+  findActivities,
+} = roomsSlice.actions;
 export const roomsReducer = roomsSlice.reducer;

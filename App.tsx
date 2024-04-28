@@ -19,6 +19,7 @@ import store from './store/store';
 import CreateActivity from './Components/Pages/CreateActivity/CreateActivity';
 import Find from './Components/Pages/Find/Find';
 import CreateChanel from './Components/Pages/CreateChanel/CreateChanel';
+import ChanelSettings from './Components/Pages/ChanelSettings/ChanelSeetings';
 
 const Stack = createNativeStackNavigator();
 
@@ -76,7 +77,12 @@ function App(): React.JSX.Element {
               <Stack.Screen
                 name="Create_Chanel"
                 component={CreateChanel}></Stack.Screen>
-
+              <Stack.Screen
+                name="Add_Members"
+                component={CreateActivity}></Stack.Screen>
+              <Stack.Screen
+                name="Chanel_Settings"
+                component={ChanelSettings}></Stack.Screen>
               <Stack.Screen
                 name="Create"
                 component={CreateActivity}></Stack.Screen>

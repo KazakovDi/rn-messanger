@@ -17,16 +17,7 @@ const ChanelSettings = ({navigation, route}) => {
         leftOnPress={navigation.goBack}
         rightBtn={faCheck}
         rightOnPress={() => {
-          dispatch(
-            createChat({
-              type: 'chanel',
-              id: Math.random(),
-              name: nameRef.current.value,
-              description: descriptionRef.current?.value,
-              avatarUrl: imageSource,
-            }),
-          );
-          navigation.navigate('Create_Chanel_Next');
+          navigation.navigate('Home');
         }}>
         <Text style={{marginLeft: 20, color: '#fff', fontWeight: '700'}}>
           Создать канал
@@ -52,9 +43,6 @@ const ChanelSettings = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
   },
   radioButton: {
     paddingVertical: 12,

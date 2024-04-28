@@ -16,6 +16,7 @@ const CreateChanel = ({navigation}) => {
   const [imageSource, setImageSource] = useState('');
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
+  const id = Math.random();
   return (
     <View>
       <NavBar
@@ -26,13 +27,13 @@ const CreateChanel = ({navigation}) => {
           dispatch(
             createChat({
               type: 'chanel',
-              id: Math.random(),
+              id: id,
               name: nameRef.current.value,
               description: descriptionRef.current?.value,
               avatarUrl: imageSource,
             }),
           );
-          navigation.navigate('Create_Chanel_Next');
+          navigation.navigate('Chanel_Settings', {id});
         }}>
         <Text style={{marginLeft: 20, color: '#fff', fontWeight: '700'}}>
           Создать канал

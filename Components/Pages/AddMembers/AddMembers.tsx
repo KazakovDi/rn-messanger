@@ -9,12 +9,12 @@ import Contacts from 'react-native-contacts';
 import FloatingBtn from '../../Functional/FloatIcon/FloatingBtn';
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
 import InterestItem from '../../UI/InterestItem/InterestItem';
-const AddMembers = ({navigation}) => {
+const AddMembers = ({navigation, route}) => {
   const [members, setMembers] = useState([]);
   const [contactList, setContact] = useState([]);
   const [filterInputValue, setFilterInputValue] = useState('');
   const dispatch = useAppDispatch();
-
+  const id = route.params.chanelItem;
   useEffect(() => {
     if (filterInputValue === '') {
       request(PERMISSIONS.ANDROID.READ_CONTACTS).then(() => {
@@ -68,7 +68,7 @@ const AddMembers = ({navigation}) => {
       <FloatingBtn
         Press={() => {
           navigation.navigate('Home');
-          dispatch(editChanel({members}));
+          dispatch(editChanel({id, members}));
         }}
         icon={faArrowRight}
         pos={{right: 10, bottom: 15}}
