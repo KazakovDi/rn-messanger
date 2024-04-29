@@ -24,6 +24,7 @@ import {createChat} from '../../../store/Room.slice';
 import {useTheme} from '@rneui/themed';
 import NavBar from '../../Functional/NavBar/NavBar';
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons/faMagnifyingGlass';
+import Devider from '../../UI/Devider/Devider';
 
 const CreateActivity = ({navigation}) => {
   const dispatch = useAppDispatch();
@@ -65,6 +66,7 @@ const CreateActivity = ({navigation}) => {
         rightBtn={isActive ? null : faMagnifyingGlass}
         rightOnPress={() => {
           setIsActive(true);
+          filterInputRef.current.focus();
         }}>
         <TextInput
           value={filterValue}
@@ -83,7 +85,6 @@ const CreateActivity = ({navigation}) => {
             type: 'group',
             id: Math.random(),
           });
-          // dispatch(createChat());
         }}
         icon={faUsers}
       />
@@ -92,7 +93,9 @@ const CreateActivity = ({navigation}) => {
         onPress={() => navigation.navigate('Create_Chanel')}
         icon={faBullhorn}
       />
+      <Devider title="" />
       <FlatList
+        style={{marginHorizontal: 10}}
         renderItem={({item}) => (
           <TouchableOpacity
             onPress={() => {
@@ -134,6 +137,9 @@ const CreateActivity = ({navigation}) => {
             paddingVertical: 10,
             paddingHorizontal: 10,
             backgroundColor: theme.colors.bg,
+          },
+          wrapper: {
+            backgroundColor: 'transparent',
           },
         }}
         ref={bottomSheetRef}>

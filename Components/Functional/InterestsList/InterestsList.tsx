@@ -14,6 +14,7 @@ const InterestsList = ({navigation}) => {
             navigation.navigate('Chat', {roomId: item.id});
           }}>
           <InterestItem
+            avatarUrl={item.avatarUrl}
             title={item.name}
             msg={item.msgs.length ? item.msgs[item.msgs.length - 1].body : ''}
           />

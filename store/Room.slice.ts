@@ -144,13 +144,16 @@ const roomsSlice = createSlice({
       });
     },
     addMembers: (state, action) => {
-      console.log('action', action.payload);
       const {id, members} = action.payload;
       for (let room of state.data) {
         if (room.id === id) {
           room.members.push(...members);
         }
       }
+    },
+    removeActivity: (state, action) => {
+      const filtered = state.data.filter(room => room.id !== action.payload.id);
+      state.data = [...filtered];
     },
   },
 });
@@ -162,5 +165,6 @@ export const {
   togglePinned,
   createChat,
   findActivities,
+  removeActivity,
 } = roomsSlice.actions;
 export const roomsReducer = roomsSlice.reducer;

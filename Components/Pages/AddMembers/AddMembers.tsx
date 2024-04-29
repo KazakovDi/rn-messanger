@@ -9,14 +9,13 @@ import Contacts from 'react-native-contacts';
 import FloatingBtn from '../../Functional/FloatIcon/FloatingBtn';
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
 import InterestItem from '../../UI/InterestItem/InterestItem';
-import {addMembers} from '../../../store/Room.slice';
+import {addMembers, removeActivity} from '../../../store/Room.slice';
 const AddMembers = ({navigation, route}) => {
   const dispatch = useAppDispatch();
   const [members, setMembers] = useState([]);
   const [contactList, setContact] = useState([]);
   const [filterInputValue, setFilterInputValue] = useState('');
   const id = route.params.id;
-  console.log('AddMembers', id);
   const type = route.params.type;
   useEffect(() => {
     if (filterInputValue === '') {
@@ -41,9 +40,16 @@ const AddMembers = ({navigation, route}) => {
   }, [filterInputValue]);
   return (
     <View style={{flex: 1}}>
-      <NavBar leftBtn={faArrowLeft} leftOnPress={navigation.goBack}>
-        <View>
-          <Text style={{marginLeft: 20, color: '#fff', fontWeight: '700'}}>
+      <NavBar
+        leftBtn={faArrowLeft}
+        leftOnPress={() => {
+          if (type === 'group') {
+            dispatch(removeActivity({id}));
+          }
+          navigation.goBack();
+        }}>
+        <View style={{marginLeft: 20}}>
+          <Text style={{color: '#fff', fontWeight: '700'}}>
             {type === 'group' ? 'Создать группу' : 'Создать канал'}
           </Text>
           <Text>{members.length} участников</Text>

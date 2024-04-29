@@ -8,7 +8,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useTheme} from '@rneui/themed';
 import {pick, pickDirectory} from 'react-native-document-picker';
 import {useAppDispatch} from '../../../store/store';
-import {createChat} from '../../../store/Room.slice';
+import {createChat, removeActivity} from '../../../store/Room.slice';
 
 const CreateChanel = ({navigation}) => {
   const {theme} = useTheme();
@@ -21,7 +21,10 @@ const CreateChanel = ({navigation}) => {
     <View>
       <NavBar
         leftBtn={faArrowLeft}
-        leftOnPress={navigation.goBack}
+        leftOnPress={() => {
+          dispatch(removeActivity({id}));
+          navigation.goBack();
+        }}
         rightBtn={faCheck}
         rightOnPress={() => {
           dispatch(

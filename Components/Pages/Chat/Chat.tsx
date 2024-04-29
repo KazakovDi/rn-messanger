@@ -16,24 +16,27 @@ import NavBar from '../../Functional/NavBar/NavBar';
 const Chat = ({navigation: {navigate, goBack}, route}) => {
   const dispatch = useAppDispatch();
   const {theme} = useTheme();
-
-  const [title, msgs, roomId, pinned, members] = useAppSelector(
-    (state: RootState) => {
-      for (let room of state.rooms.data) {
-        console.log('room', room);
-        if (room.id === route.params.roomId)
-          return [room.name, room.msgs, room.id, room.pinned, room.members];
-      }
-    },
-  );
-  console.log('members', members);
+  // const [title, msgs, roomId, pinned, members]
+  const {
+    name: title,
+    msgs,
+    id: roomId,
+    pinned,
+    members,
+    avatarUrl,
+  } = useAppSelector((state: RootState) => {
+    for (let room of state.rooms.data) {
+      console.log('room', room);
+      if (room.id === route.params.roomId) return room;
+      // return [room.name, room.msgs, room.id, room.pinned, room.members];
+    }
+  });
   const User = useAppSelector((state: RootState) => state.user.name);
   const listRef = useRef(null);
   useEffect(() => {
     listRef.current.scrollToEnd();
   }, []);
   const sendMsgHandler = (msg: string, attached) => {
-    console.log('attach', attached);
     dispatch(addMsg({user: User, body: msg, id: roomId}));
     dispatch(addMedia({user: User, roomId: roomId, attaches: attached}));
     listRef.current.scrollToEnd();
@@ -53,7 +56,7 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
           alignItems: 'center',
           position: 'relative',
         }}>
-        <NavBar leftBtn={faArrowLeft} leftOnPress={goBack}>
+        <NavBar leftBtn={faArrowLeft} leftOnPress={() => navigate('Home')}>
           <TouchableOpacity onPress={() => navigate('Info', {roomId})}>
             <View
               style={{
@@ -62,17 +65,27 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
                 alignContent: 'center',
                 paddingLeft: 10,
               }}>
-              <Avatar
-                size={64}
-                rounded
-                title={title[0] + title[1]}
-                containerStyle={{backgroundColor: '#6733b9'}}
-              />
+              {avatarUrl ? (
+                <Avatar
+                  size={64}
+                  rounded
+                  source={{uri: avatarUrl}}
+                  containerStyle={{backgroundColor: '#6733b9'}}
+                />
+              ) : (
+                <Avatar
+                  size={64}
+                  rounded
+                  title={title[0] + title[1]}
+                  containerStyle={{backgroundColor: '#6733b9'}}
+                />
+              )}
+
               <View style={{marginLeft: 15, paddingVertical: 6}}>
                 <Text style={{fontWeight: '700'}}>{title}</Text>
                 <Text>Был(а) недавно</Text>
                 <Text>
-                  {members?.length ? members?.length + 'Участников' : ''}
+                  {members?.length ? members?.length + ' Участников' : ''}
                 </Text>
               </View>
             </View>

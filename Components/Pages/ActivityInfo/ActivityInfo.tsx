@@ -13,14 +13,13 @@ const dataUser = [
 ];
 const ActivityInfo = ({navigation, route}) => {
   const {theme} = useTheme();
-  const [title, mediaData] = useAppSelector((state: RootState) => {
+  const [title, mediaData, avatarUrl] = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
       if (room.id === route.params.roomId) {
-        return [room.name, room.media];
+        return [room.name, room.media, room.avatarUrl];
       }
     }
   });
-  console.log('activity', mediaData);
   return (
     <View>
       <NavBar
@@ -30,12 +29,22 @@ const ActivityInfo = ({navigation, route}) => {
         }}>
         <View
           style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-          <Avatar
-            size={64}
-            rounded
-            title={title[0] + title[1]}
-            containerStyle={{backgroundColor: '#6733b9'}}
-          />
+          {avatarUrl ? (
+            <Avatar
+              size={64}
+              rounded
+              source={{uri: avatarUrl}}
+              containerStyle={{backgroundColor: '#6733b9'}}
+            />
+          ) : (
+            <Avatar
+              size={64}
+              rounded
+              title={title[0] + title[1]}
+              containerStyle={{backgroundColor: '#6733b9'}}
+            />
+          )}
+
           <View style={{marginLeft: 15, paddingVertical: 6}}>
             <Text style={{color: theme.colors.primary, fontWeight: '700'}}>
               {title}
