@@ -17,12 +17,16 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
   const dispatch = useAppDispatch();
   const {theme} = useTheme();
 
-  const [title, msgs, roomId, pinned] = useAppSelector((state: RootState) => {
-    for (let room of state.rooms.data) {
-      if (room.id === route.params.roomId)
-        return [room.name, room.msgs, room.id, room.pinned];
-    }
-  });
+  const [title, msgs, roomId, pinned, members] = useAppSelector(
+    (state: RootState) => {
+      for (let room of state.rooms.data) {
+        console.log('room', room);
+        if (room.id === route.params.roomId)
+          return [room.name, room.msgs, room.id, room.pinned, room.members];
+      }
+    },
+  );
+  console.log('members', members);
   const User = useAppSelector((state: RootState) => state.user.name);
   const listRef = useRef(null);
   useEffect(() => {
@@ -67,6 +71,9 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
               <View style={{marginLeft: 15, paddingVertical: 6}}>
                 <Text style={{fontWeight: '700'}}>{title}</Text>
                 <Text>Был(а) недавно</Text>
+                <Text>
+                  {members?.length ? members?.length + 'Участников' : ''}
+                </Text>
               </View>
             </View>
           </TouchableOpacity>

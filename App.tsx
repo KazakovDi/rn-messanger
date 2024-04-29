@@ -20,6 +20,8 @@ import CreateActivity from './Components/Pages/CreateActivity/CreateActivity';
 import Find from './Components/Pages/Find/Find';
 import CreateChanel from './Components/Pages/CreateChanel/CreateChanel';
 import ChanelSettings from './Components/Pages/ChanelSettings/ChanelSeetings';
+import AddMembers from './Components/Pages/AddMembers/AddMembers';
+import CreateGroup from './Components/Pages/CreateGroup/CreateGroup';
 
 const Stack = createNativeStackNavigator();
 
@@ -66,26 +68,20 @@ function App(): React.JSX.Element {
                 headerShown: false,
               }}
               initialRouteName="Home">
-              <Stack.Screen name="Info" component={ActivityInfo}></Stack.Screen>
+              <Stack.Screen name="Info" component={ActivityInfo} />
 
               <Stack.Screen
                 name="Chat"
                 component={Chat}
-                roomId={({params}) => params.roomId}></Stack.Screen>
-              <Stack.Screen name="Home" component={ChatsList}></Stack.Screen>
-              <Stack.Screen name="Find" component={Find}></Stack.Screen>
-              <Stack.Screen
-                name="Create_Chanel"
-                component={CreateChanel}></Stack.Screen>
-              <Stack.Screen
-                name="Add_Members"
-                component={CreateActivity}></Stack.Screen>
-              <Stack.Screen
-                name="Chanel_Settings"
-                component={ChanelSettings}></Stack.Screen>
-              <Stack.Screen
-                name="Create"
-                component={CreateActivity}></Stack.Screen>
+                roomId={({params}) => params.roomId}
+              />
+              <Stack.Screen name="Home" component={ChatsList} />
+              <Stack.Screen name="Find" component={Find} />
+              <Stack.Screen name="Create_Chanel" component={CreateChanel} />
+              <Stack.Screen name="Create_Group" component={CreateGroup} />
+              <Stack.Screen name="Add_Members" component={AddMembers} />
+              <Stack.Screen name="Chanel_Settings" component={ChanelSettings} />
+              <Stack.Screen name="Create" component={CreateActivity} />
             </Stack.Navigator>
           </NavigationContainer>
         </Provider>

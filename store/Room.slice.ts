@@ -122,6 +122,7 @@ const roomsSlice = createSlice({
         type: action.payload.type,
         name: action.payload.name,
         description: action.payload.description,
+        members: action.payload.members,
         avatarUrl: action.payload.avatarUrl,
         msgs: [],
         pinnedCache: {},
@@ -143,6 +144,7 @@ const roomsSlice = createSlice({
       });
     },
     addMembers: (state, action) => {
+      console.log('action', action.payload);
       const {id, members} = action.payload;
       for (let room of state.data) {
         if (room.id === id) {

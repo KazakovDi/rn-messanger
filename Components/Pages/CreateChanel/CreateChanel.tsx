@@ -31,9 +31,10 @@ const CreateChanel = ({navigation}) => {
               name: nameRef.current.value,
               description: descriptionRef.current?.value,
               avatarUrl: imageSource,
+              members: [],
             }),
           );
-          navigation.navigate('Chanel_Settings', {id});
+          navigation.navigate('Add_Members', {type: 'chanel', id});
         }}>
         <Text style={{marginLeft: 20, color: '#fff', fontWeight: '700'}}>
           Создать канал

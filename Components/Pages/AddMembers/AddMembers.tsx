@@ -9,12 +9,15 @@ import Contacts from 'react-native-contacts';
 import FloatingBtn from '../../Functional/FloatIcon/FloatingBtn';
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
 import InterestItem from '../../UI/InterestItem/InterestItem';
+import {addMembers} from '../../../store/Room.slice';
 const AddMembers = ({navigation, route}) => {
+  const dispatch = useAppDispatch();
   const [members, setMembers] = useState([]);
   const [contactList, setContact] = useState([]);
   const [filterInputValue, setFilterInputValue] = useState('');
-  const dispatch = useAppDispatch();
-  const id = route.params.chanelItem;
+  const id = route.params.id;
+  console.log('AddMembers', id);
+  const type = route.params.type;
   useEffect(() => {
     if (filterInputValue === '') {
       request(PERMISSIONS.ANDROID.READ_CONTACTS).then(() => {
@@ -41,7 +44,7 @@ const AddMembers = ({navigation, route}) => {
       <NavBar leftBtn={faArrowLeft} leftOnPress={navigation.goBack}>
         <View>
           <Text style={{marginLeft: 20, color: '#fff', fontWeight: '700'}}>
-            Создать канал
+            {type === 'group' ? 'Создать группу' : 'Создать канал'}
           </Text>
           <Text>{members.length} участников</Text>
         </View>
@@ -67,8 +70,13 @@ const AddMembers = ({navigation, route}) => {
       />
       <FloatingBtn
         Press={() => {
-          navigation.navigate('Home');
-          dispatch(editChanel({id, members}));
+          if (type === 'group') {
+            navigation.navigate('Create_Group', {members});
+          }
+          if (type === 'chanel') {
+            dispatch(addMembers({id, members}));
+            navigation.navigate('Chat', {roomId: id});
+          }
         }}
         icon={faArrowRight}
         pos={{right: 10, bottom: 15}}

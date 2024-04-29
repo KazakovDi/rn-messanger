@@ -78,7 +78,13 @@ const CreateActivity = ({navigation}) => {
       </NavBar>
       <IconButton
         title={'Создать группу'}
-        onPress={() => console.log('press')}
+        onPress={() => {
+          navigation.navigate('Add_Members', {
+            type: 'group',
+            id: Math.random(),
+          });
+          // dispatch(createChat());
+        }}
         icon={faUsers}
       />
       <IconButton

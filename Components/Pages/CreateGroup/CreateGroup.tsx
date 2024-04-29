@@ -5,12 +5,20 @@ import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {pick, pickDirectory} from 'react-native-document-picker';
 import {faCamera} from '@fortawesome/free-solid-svg-icons/faCamera';
-
-const CreateGroup = ({navigation}) => {
+import {faCheck} from '@fortawesome/free-solid-svg-icons/faCheck';
+import {useTheme} from '@rneui/themed';
+import FloatingBtn from '../../Functional/FloatIcon/FloatingBtn';
+import {useAppDispatch} from '../../../store/store';
+import {createChat} from '../../../store/Room.slice';
+const CreateGroup = ({navigation, route}) => {
   const [imageSource, setImageSource] = useState('');
+  const {theme} = useTheme();
+  const dispatch = useAppDispatch();
   const nameRef = useRef(null);
+  const id = Math.random();
+  const {members} = route.params;
   return (
-    <View>
+    <View style={{flex: 1}}>
       <NavBar leftBtn={faArrowLeft} leftOnPress={navigation.goBack}>
         <Text>Создать группу</Text>
       </NavBar>
@@ -67,6 +75,24 @@ const CreateGroup = ({navigation}) => {
           }}
         />
       </View>
+      <FloatingBtn
+        pos={{right: 10, bottom: 15}}
+        Press={() => {
+          dispatch(
+            createChat({
+              type: 'group',
+              id,
+              members: members,
+              name: nameRef.current.value,
+              description: '',
+              avatarUrl: imageSource,
+            }),
+          );
+
+          navigation.navigate('Chat', {roomId: id});
+        }}
+        icon={faCheck}
+      />
     </View>
   );
 };
