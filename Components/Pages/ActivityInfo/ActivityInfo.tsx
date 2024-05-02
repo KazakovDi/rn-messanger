@@ -12,6 +12,7 @@ const dataUser = [
   {body: '@CoolGuy', key: 2, description: 'Имя пользователя'},
 ];
 const ActivityInfo = ({navigation, route}) => {
+  console.log("home")
   const {theme} = useTheme();
   const [title, mediaData, avatarUrl] = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
@@ -23,10 +24,7 @@ const ActivityInfo = ({navigation, route}) => {
   return (
     <View>
       <NavBar
-        leftBtn={faArrowLeft}
-        leftOnPress={() => {
-          navigation.goBack();
-        }}>
+        leftBtn={faArrowLeft}>
         <View
           style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           {avatarUrl ? (

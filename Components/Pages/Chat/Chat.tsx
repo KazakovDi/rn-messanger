@@ -16,7 +16,6 @@ import NavBar from '../../Functional/NavBar/NavBar';
 const Chat = ({navigation: {navigate, goBack}, route}) => {
   const dispatch = useAppDispatch();
   const {theme} = useTheme();
-  // const [title, msgs, roomId, pinned, members]
   const {
     name: title,
     msgs,
@@ -28,9 +27,9 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
     for (let room of state.rooms.data) {
       console.log('room', room);
       if (room.id === route.params.roomId) return room;
-      // return [room.name, room.msgs, room.id, room.pinned, room.members];
     }
   });
+  console.log("chat")
   const User = useAppSelector((state: RootState) => state.user.name);
   const listRef = useRef(null);
   useEffect(() => {
