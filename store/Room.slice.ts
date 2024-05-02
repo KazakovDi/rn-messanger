@@ -54,6 +54,7 @@ const roomsSlice = createSlice({
       state: RoomSliceState,
       action: PayloadAction<{user: string; body: string}>,
     ) => {
+      if (!action.payload.body) return;
       for (let room of state.data) {
         if (room.id === action.payload.id) {
           room.msgs.push({

@@ -32,11 +32,19 @@ const NavBar = ({
         width: '100%',
       }}>
       <TouchableOpacity style={{paddingHorizontal: 2}} onPress={leftOnPress}>
-        <FontAwesomeIcon color={theme.colors.bg} size={28} icon={leftBtn} />
+        <FontAwesomeIcon
+          color={theme.colors.primary}
+          size={28}
+          icon={leftBtn}
+        />
       </TouchableOpacity>
       <View style={{flexGrow: 1}}>{children}</View>
       <TouchableOpacity style={{paddingHorizontal: 2}} onPress={rightOnPress}>
-        <FontAwesomeIcon color={theme.colors.bg} size={28} icon={rightBtn} />
+        <FontAwesomeIcon
+          color={theme.colors.primary}
+          size={28}
+          icon={rightBtn}
+        />
       </TouchableOpacity>
     </View>
   );

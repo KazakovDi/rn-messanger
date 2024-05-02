@@ -10,6 +10,8 @@ import FloatingBtn from '../../Functional/FloatIcon/FloatingBtn';
 import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
 import InterestItem from '../../UI/InterestItem/InterestItem';
 import {addMembers, removeActivity} from '../../../store/Room.slice';
+import {useTheme} from '@rneui/themed';
+
 const AddMembers = ({navigation, route}) => {
   const dispatch = useAppDispatch();
   const [members, setMembers] = useState([]);
@@ -17,6 +19,8 @@ const AddMembers = ({navigation, route}) => {
   const [filterInputValue, setFilterInputValue] = useState('');
   const id = route.params.id;
   const type = route.params.type;
+  const {theme} = useTheme();
+
   useEffect(() => {
     if (filterInputValue === '') {
       request(PERMISSIONS.ANDROID.READ_CONTACTS).then(() => {
@@ -39,7 +43,7 @@ const AddMembers = ({navigation, route}) => {
     }
   }, [filterInputValue]);
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: theme.colors.bg}}>
       <NavBar
         leftBtn={faArrowLeft}
         leftOnPress={() => {

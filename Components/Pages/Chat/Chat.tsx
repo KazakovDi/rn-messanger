@@ -19,6 +19,7 @@ import {
 import PinnedMessages from '../../Functional/PinnedMessages/PinnedMessages';
 import NavBar from '../../Functional/NavBar/NavBar';
 import FullScreen from '../../UI/FullScreen';
+import MediaList from '../../Functional/MediaList/MediaList';
 const Chat = ({navigation: {navigate, goBack}, route}) => {
   const dispatch = useAppDispatch();
   const {theme} = useTheme();
@@ -148,6 +149,7 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
             })}
           />
         </View>
+
         <ChatInput onSendMsg={sendMsgHandler} />
       </View>
     </>

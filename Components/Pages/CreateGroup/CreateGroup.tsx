@@ -12,13 +12,14 @@ import {useAppDispatch} from '../../../store/store';
 import {createChat} from '../../../store/Room.slice';
 const CreateGroup = ({navigation, route}) => {
   const [imageSource, setImageSource] = useState('');
+  const [hasError, setHasError] = useState(false);
   const {theme} = useTheme();
   const dispatch = useAppDispatch();
   const nameRef = useRef(null);
   const id = Math.random();
   const {members} = route.params;
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: theme.colors.bg}}>
       <NavBar leftBtn={faArrowLeft} leftOnPress={navigation.goBack}>
         <Text>Создать группу</Text>
       </NavBar>
@@ -29,6 +30,7 @@ const CreateGroup = ({navigation, route}) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingHorizontal: 10,
+          marginTop: 10,
         }}>
         {imageSource ? (
           <TouchableOpacity>
@@ -65,31 +67,41 @@ const CreateGroup = ({navigation, route}) => {
         )}
         <TextInput
           ref={nameRef}
-          onChangeText={e => (nameRef.current.value = e)}
+          onChangeText={e => {
+            nameRef.current.value = e;
+            setHasError(false);
+          }}
           placeholder="Название канала"
+          placeholderTextColor={hasError ? 'red' : theme.colors.primary}
           style={{
+            color: theme.colors.primary,
             borderBottomWidth: 1,
-            borderBottomColor: theme.colors.icon,
+            borderBottomColor: hasError ? 'red' : theme.colors.icon,
             flexGrow: 1,
             marginLeft: 15,
           }}
         />
       </View>
+      <View style={{flex: 1}} />
       <FloatingBtn
         pos={{right: 10, bottom: 15}}
         Press={() => {
-          dispatch(
-            createChat({
-              type: 'group',
-              id,
-              members: members,
-              name: nameRef.current.value,
-              description: '',
-              avatarUrl: imageSource,
-            }),
-          );
+          if (nameRef.current.value) {
+            dispatch(
+              createChat({
+                type: 'group',
+                id,
+                members: members,
+                name: nameRef.current.value,
+                description: '',
+                avatarUrl: imageSource,
+              }),
+            );
 
-          navigation.navigate('Chat', {roomId: id});
+            navigation.navigate('Chat', {roomId: id});
+          } else {
+            setHasError(true);
+          }
         }}
         icon={faCheck}
       />

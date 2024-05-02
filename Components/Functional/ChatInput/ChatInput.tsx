@@ -14,9 +14,11 @@ import {faFaceSmile} from '@fortawesome/free-solid-svg-icons/faFaceSmile';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 import {pick, pickDirectory} from 'react-native-document-picker';
+import MediaList from '../MediaList/MediaList';
 const ChatInput = ({onSendMsg}) => {
   const [inputValue, setInputValue] = useState('');
   const [attachedPhotos, setAttachedPhotos] = useState([]);
+  console.log('attachedPhotos', attachedPhotos);
   const [isActive, setIsActive] = useState(false);
   const {theme} = useTheme();
 
@@ -24,6 +26,7 @@ const ChatInput = ({onSendMsg}) => {
 
   return (
     <View>
+      <MediaList data={attachedPhotos.map(item => item.uri)} />
       <View
         style={{
           paddingVertical: 5,
@@ -54,15 +57,14 @@ const ChatInput = ({onSendMsg}) => {
             icon={faFaceSmile}
           />
         </TouchableOpacity>
+
         <TextInput
           style={{
             maxHeight: 110,
             color: theme.colors.primary,
             paddingVertical: 0,
-            // width: '70%',
             flexGrow: 1,
             flex: 1,
-            // flexBasis:1
           }}
           multiline
           placeholder="отправить"
@@ -72,6 +74,7 @@ const ChatInput = ({onSendMsg}) => {
             setInputValue(e);
           }}
         />
+
         <TouchableOpacity
           onPress={() => {
             onSendMsg(inputValue, attachedPhotos);
@@ -81,7 +84,11 @@ const ChatInput = ({onSendMsg}) => {
           <FontAwesomeIcon
             color={theme.colors.icon}
             size={30}
-            icon={!!inputValue ? faCircleArrowRight : faMicrophone}
+            icon={
+              !!inputValue || attachedPhotos.length
+                ? faCircleArrowRight
+                : faMicrophone
+            }
           />
         </TouchableOpacity>
         <RBSheet

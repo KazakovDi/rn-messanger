@@ -14,11 +14,12 @@ const CreateChanel = ({navigation}) => {
   const {theme} = useTheme();
   const dispatch = useAppDispatch();
   const [imageSource, setImageSource] = useState('');
+  const [hasError, setHasError] = useState(false);
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
   const id = Math.random();
   return (
-    <View>
+    <View style={{flex: 1, backgroundColor: theme.colors.bg}}>
       <NavBar
         leftBtn={faArrowLeft}
         leftOnPress={() => {
@@ -27,17 +28,21 @@ const CreateChanel = ({navigation}) => {
         }}
         rightBtn={faCheck}
         rightOnPress={() => {
-          dispatch(
-            createChat({
-              type: 'chanel',
-              id: id,
-              name: nameRef.current.value,
-              description: descriptionRef.current?.value,
-              avatarUrl: imageSource,
-              members: [],
-            }),
-          );
-          navigation.navigate('Add_Members', {type: 'chanel', id});
+          if (nameRef.current.value) {
+            dispatch(
+              createChat({
+                type: 'chanel',
+                id: id,
+                name: nameRef.current.value,
+                description: descriptionRef.current?.value,
+                avatarUrl: imageSource,
+                members: [],
+              }),
+            );
+            navigation.navigate('Add_Members', {type: 'chanel', id});
+          } else {
+            setHasError(true);
+          }
         }}>
         <Text style={{marginLeft: 20, color: '#fff', fontWeight: '700'}}>
           Создать канал
@@ -88,9 +93,11 @@ const CreateChanel = ({navigation}) => {
             ref={nameRef}
             onChangeText={e => (nameRef.current.value = e)}
             placeholder="Название канала"
+            placeholderTextColor={hasError ? 'red' : theme.colors.icon}
             style={{
+              color: theme.colors.primary,
               borderBottomWidth: 1,
-              borderBottomColor: theme.colors.icon,
+              borderBottomColor: hasError ? 'red' : theme.colors.icon,
               flexGrow: 1,
               marginLeft: 15,
             }}
@@ -100,7 +107,9 @@ const CreateChanel = ({navigation}) => {
           ref={descriptionRef}
           onChangeText={e => (descriptionRef.current.value = e)}
           placeholder="Описание"
+          placeholderTextColor={theme.colors.icon}
           style={{
+            color: theme.colors.primary,
             borderBottomWidth: 1,
             borderBottomColor: theme.colors.icon,
             paddingVertical: 7,

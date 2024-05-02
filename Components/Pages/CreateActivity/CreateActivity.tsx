@@ -59,7 +59,7 @@ const CreateActivity = ({navigation}) => {
     }
   }, [filterValue]);
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: theme.colors.bg}}>
       <NavBar
         leftBtn={faArrowLeft}
         leftOnPress={isActive ? () => setIsActive(false) : navigation.goBack}
