@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, TouchableOpacity, FlatList, TextInput} from 'react-native';
 import RBSheet from '@poki_san/react-native-bottom-sheet';
 import {useTheme} from '@rneui/themed';
@@ -12,7 +12,7 @@ import {faFile} from '@fortawesome/free-solid-svg-icons/faFile';
 import {faMusic} from '@fortawesome/free-solid-svg-icons/faMusic';
 import {faFaceSmile} from '@fortawesome/free-solid-svg-icons/faFaceSmile';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-
+import Animated, {useSharedValue, withTiming} from 'react-native-reanimated';
 import {pick, pickDirectory} from 'react-native-document-picker';
 import MediaList from '../MediaList/MediaList';
 const ChatInput = ({onSendMsg}) => {
@@ -21,9 +21,18 @@ const ChatInput = ({onSendMsg}) => {
   console.log('attachedPhotos', attachedPhotos);
   const [isActive, setIsActive] = useState(false);
   const {theme} = useTheme();
-
+  const translateX = useSharedValue(40);
   const bottomSheetRef = useRef(null);
-
+  const handleAnimation = value => {
+    translateX.value = withTiming(value);
+  };
+  useEffect(() => {
+    if (inputValue) {
+      handleAnimation(0);
+    } else {
+      handleAnimation(40);
+    }
+  }, [inputValue]);
   return (
     <View>
       <MediaList data={attachedPhotos.map(item => item.uri)} />
@@ -74,22 +83,39 @@ const ChatInput = ({onSendMsg}) => {
             setInputValue(e);
           }}
         />
-
+        <View>
+          <FontAwesomeIcon
+            color={inputValue ? theme.colors.bg : theme.colors.icon}
+            size={30}
+            icon={faMicrophone}
+          />
+        </View>
         <TouchableOpacity
           onPress={() => {
             onSendMsg(inputValue, attachedPhotos);
             setAttachedPhotos([]);
             setInputValue('');
           }}>
-          <FontAwesomeIcon
-            color={theme.colors.icon}
-            size={30}
-            icon={
-              !!inputValue || attachedPhotos.length
-                ? faCircleArrowRight
-                : faMicrophone
-            }
-          />
+          <Animated.View
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: '-100%',
+              zIndex: 999,
+              transform: [{translateX}],
+            }}>
+            <FontAwesomeIcon
+              // color={theme.colors.icon}
+              color={'red'}
+              size={30}
+              icon={
+                faCircleArrowRight
+                // !!inputValue || attachedPhotos.length
+                //   ? faCircleArrowRight
+                //   : faMicrophone
+              }
+            />
+          </Animated.View>
         </TouchableOpacity>
         <RBSheet
           animationType="slide"
