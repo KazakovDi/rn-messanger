@@ -14,7 +14,8 @@ import {
   addMsg,
   addMedia,
   togglePinned,
-  setVideo,
+  setMediaScreen,
+  removeMediaScreen,
 } from '../../../store/Room.slice';
 import PinnedMessages from '../../Functional/PinnedMessages/PinnedMessages';
 import NavBar from '../../Functional/NavBar/NavBar';
@@ -31,6 +32,7 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
     pinned,
     members,
     avatarUrl,
+    media,
   } = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
       console.log('room', room);
@@ -51,8 +53,9 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
   return (
     <>
       <FullScreen
+        media={media}
         onClose={() => {
-          dispatch(setVideo(''));
+          dispatch(removeMediaScreen());
         }}
       />
       <View

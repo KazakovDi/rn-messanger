@@ -1,16 +1,13 @@
 import React, {useState} from 'react';
 import {View, FlatList, Image, Touchable, TouchableOpacity} from 'react-native';
-import ImageView from 'react-native-image-view';
+import {removeMediaScreen, setMediaScreen} from '../../../store/Room.slice';
+import {useAppDispatch} from '../../../store/store';
+import Video from 'react-native-video';
+import FullScreen from '../../UI/FullScreen';
+
 const MediaList = ({data}: {data: string[]}) => {
   console.log('MediaList', data);
-  const [isOpen, setIsOpen] = useState<null | number>(null);
-  const images = data.map(item => {
-    return {
-      source: {
-        uri: item,
-      },
-    };
-  });
+  const dispatch = useAppDispatch();
   return (
     <>
       <FlatList
@@ -18,20 +15,26 @@ const MediaList = ({data}: {data: string[]}) => {
         renderItem={({item, index}) => (
           <TouchableOpacity
             onPress={() => {
-              setIsOpen(index);
+              dispatch(setMediaScreen({type: item.type, uri: item.uri}));
             }}>
-            <Image style={{height: 128, width: 128}} source={{uri: item}} />
+            {item.type === 'video/mp4' ? (
+              <Video
+                // Can be a URL or a local file.
+                source={{uri: item.uri}}
+                // Store reference
+                style={{width: 128, height: 128}}
+                // Callback when remote video is buffering
+              />
+            ) : (
+              <Image
+                style={{height: 128, width: 128}}
+                source={{uri: item.uri}}
+              />
+            )}
           </TouchableOpacity>
         )}
         keyExtractor={item => item}
         data={data}
-      />
-      <ImageView
-        images={images}
-        imageIndex={isOpen}
-        isVisible={isOpen !== null}
-        isSwipeCloseEnabled={true}
-        onClose={() => setIsOpen(null)}
       />
     </>
   );

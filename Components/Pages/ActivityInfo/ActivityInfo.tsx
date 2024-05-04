@@ -4,24 +4,35 @@ import {useTheme, Avatar} from '@rneui/themed';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import InfoItem from '../../UI/InfoItem/InfoItem';
 import NavBar from '../../Functional/NavBar/NavBar';
-import {RootState, useAppSelector} from '../../../store/store';
+import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
 import MediaList from '../../Functional/MediaList/MediaList';
+import FullScreen from '../../UI/FullScreen';
+import {removeMediaScreen} from '../../../store/Room.slice';
 
 const dataUser = [
   {body: '+367676437', key: 1, description: 'Телефон'},
   {body: '@CoolGuy', key: 2, description: 'Имя пользователя'},
 ];
 const ActivityInfo = ({navigation, route}) => {
+  const dispatch = useAppDispatch();
   const {theme} = useTheme();
   const [title, mediaData, avatarUrl] = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
+      console.log('room', room);
       if (room.id === route.params.roomId) {
         return [room.name, room.media, room.avatarUrl];
       }
     }
   });
+  console.log('info mediadata ', mediaData);
   return (
-    <View>
+    <View style={{flex: 1}}>
+      <FullScreen
+        media={mediaData}
+        onClose={() => {
+          dispatch(removeMediaScreen());
+        }}
+      />
       <NavBar
         leftBtn={faArrowLeft}
         leftOnPress={() => {

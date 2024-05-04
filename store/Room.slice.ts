@@ -29,7 +29,10 @@ export interface TimestampItem {
 interface RoomSliceState {
   data: RoomItem[];
   find: RoomItem[];
-  video: string;
+  activeMedia: {
+    uri: string;
+    type: string;
+  } | null;
 }
 const initialState: RoomSliceState = {
   data: [
@@ -44,7 +47,7 @@ const initialState: RoomSliceState = {
     },
   ],
   find: [],
-  video: '',
+  activeMedia: null,
 };
 const roomsSlice = createSlice({
   name: 'rooms',
@@ -70,6 +73,7 @@ const roomsSlice = createSlice({
       state: RoomSliceState,
       action: PayloadAction<{attaches: string[]; user: string}>,
     ) => {
+      console.log('attaches', action.payload.attaches);
       const items: Msg[] = [];
       const mediaBuffer: string[] = [];
       for (let index = 0; index < action.payload.attaches.length; index++) {
@@ -79,7 +83,7 @@ const roomsSlice = createSlice({
           user: action.payload.user,
           timestamp: Date.now(),
         });
-        mediaBuffer.push(action.payload.attaches[index].uri);
+        mediaBuffer.push(action.payload.attaches[index]);
       }
       for (let room of state.data) {
         if (room.id === action.payload.roomId) {
@@ -158,8 +162,16 @@ const roomsSlice = createSlice({
       const filtered = state.data.filter(room => room.id !== action.payload.id);
       state.data = [...filtered];
     },
-    setVideo: (state, action) => {
-      state.video = action.payload.uri;
+
+    setMediaScreen: (state, action) => {
+      console.log('setMediaScreen');
+      state.activeMedia = {
+        uri: action.payload.uri,
+        type: action.payload.type,
+      };
+    },
+    removeMediaScreen: state => {
+      state.activeMedia = null;
     },
   },
 });
@@ -171,7 +183,8 @@ export const {
   togglePinned,
   createChat,
   findActivities,
-  setVideo,
+  setMediaScreen,
   removeActivity,
+  removeMediaScreen,
 } = roomsSlice.actions;
 export const roomsReducer = roomsSlice.reducer;

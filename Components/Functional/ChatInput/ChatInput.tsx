@@ -27,15 +27,15 @@ const ChatInput = ({onSendMsg}) => {
     translateX.value = withTiming(value);
   };
   useEffect(() => {
-    if (inputValue) {
+    if (inputValue || attachedPhotos.length) {
       handleAnimation(0);
     } else {
       handleAnimation(40);
     }
-  }, [inputValue]);
+  }, [inputValue, attachedPhotos]);
   return (
     <View>
-      <MediaList data={attachedPhotos.map(item => item.uri)} />
+      <MediaList data={attachedPhotos} />
       <View
         style={{
           paddingVertical: 5,
@@ -103,17 +103,13 @@ const ChatInput = ({onSendMsg}) => {
               top: '-100%',
               zIndex: 999,
               transform: [{translateX}],
+              backgroundColor: theme.colors.bg,
             }}>
             <FontAwesomeIcon
               // color={theme.colors.icon}
               color={'red'}
               size={30}
-              icon={
-                faCircleArrowRight
-                // !!inputValue || attachedPhotos.length
-                //   ? faCircleArrowRight
-                //   : faMicrophone
-              }
+              icon={faCircleArrowRight}
             />
           </Animated.View>
         </TouchableOpacity>

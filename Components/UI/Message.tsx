@@ -3,7 +3,7 @@ import {View, Text, Image, Touchable, TouchableOpacity} from 'react-native';
 import Video, {VideoRef} from 'react-native-video';
 
 import {useTheme} from '@rneui/themed';
-import {setVideo} from '../../store/Room.slice';
+import {setMediaScreen} from '../../store/Room.slice';
 import {useAppDispatch} from '../../store/store';
 const Message = ({isUser, type, uri, body, onLongPress}) => {
   console.log('supirtype', type, uri);
@@ -32,16 +32,19 @@ const Message = ({isUser, type, uri, body, onLongPress}) => {
               borderRadius: 10,
             }}>
             {type === 'image/jpeg' ? (
-              <Image
-                source={{
-                  uri: uri,
-                }}
-                style={{width: '100%', height: 350}}
-              />
+              <TouchableOpacity
+                onPress={() => dispatch(setMediaScreen({uri, type}))}>
+                <Image
+                  source={{
+                    uri: uri,
+                  }}
+                  style={{width: '100%', height: 350}}
+                />
+              </TouchableOpacity>
             ) : type === 'video/mp4' ? (
               <TouchableOpacity
                 onPress={() => {
-                  dispatch(setVideo({uri}));
+                  dispatch(setMediaScreen({uri, type}));
                 }}>
                 <Video
                   // Can be a URL or a local file.
