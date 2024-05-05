@@ -34,8 +34,22 @@ const ChatInput = ({onSendMsg}) => {
     }
   }, [inputValue, attachedPhotos]);
   return (
-    <View>
-      <MediaList data={attachedPhotos} />
+    <View style={{overflow: 'scroll'}}>
+      <MediaList
+        onEditList={index => {
+          console.log('before', attachedPhotos);
+
+          const filtered = attachedPhotos.filter((item, filterInex) => {
+            console.log('item', item);
+            return index != filterInex;
+          });
+          setAttachedPhotos(filtered);
+          console.log('after', attachedPhotos);
+        }}
+        isEditible={true}
+        isHorizontal={true}
+        data={attachedPhotos}
+      />
       <View
         style={{
           paddingVertical: 5,

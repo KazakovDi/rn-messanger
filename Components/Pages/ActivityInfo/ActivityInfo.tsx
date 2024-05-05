@@ -81,7 +81,7 @@ const ActivityInfo = ({navigation, route}) => {
           }}
         />
       </View>
-      <MediaList data={mediaData} />
+      <MediaList isEditible={false} isHorizontal={false} data={mediaData} />
     </View>
   );
 };
