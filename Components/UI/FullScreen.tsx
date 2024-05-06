@@ -20,6 +20,7 @@ const FullScreen = ({onClose, media}) => {
             flex: 1,
             width: '100%',
             height: '100%',
+            backgroundColor: '#000',
           }}>
           {activeMedia.type === 'video/mp4' ? (
             <VideoPlayer
@@ -30,20 +31,23 @@ const FullScreen = ({onClose, media}) => {
               style={{flex: 1}}
             />
           ) : (
-            <>
+            <View style={{flex: 1}}>
               <TouchableOpacity
                 style={{
                   position: 'absolute',
                   zIndex: 999,
                   left: '5%',
-                  top: '1%',
+                  top: '3%',
                 }}
                 onPress={onClose}>
-                <FontAwesomeIcon color="#000" size={30} icon={faArrowLeft} />
+                <FontAwesomeIcon color="#fff" size={30} icon={faArrowLeft} />
               </TouchableOpacity>
 
-              <Image source={{uri: activeMedia.uri}} style={{flex: 1}} />
-            </>
+              <Image
+                source={{uri: activeMedia.uri}}
+                style={{flex: 1, width: '100%', objectFit: 'contain'}}
+              />
+            </View>
           )}
         </View>
       ) : null}

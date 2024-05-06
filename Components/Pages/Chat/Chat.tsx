@@ -121,9 +121,14 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
           />
         </View>
 
-        <View style={{flex: 1, flexGrow: 2, marginHorizontal: 10}}>
+        <View
+          style={{
+            flex: 1,
+            flexGrow: 2,
+            marginBottom: 20,
+            marginHorizontal: 10,
+          }}>
           <FlatList
-            style={{paddingTop: 35}}
             ref={listRef}
             keyExtractor={(item, index) => item.timestamp}
             data={msgs}

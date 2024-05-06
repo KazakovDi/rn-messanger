@@ -31,8 +31,21 @@ const MediaList = ({
           {isEditible ? (
             <TouchableOpacity
               onPress={() => handleEdit(index)}
-              style={{position: 'absolute', top: 5, right: 5, zIndex: 999}}>
-              <FontAwesomeIcon color="#fff" size={18} icon={faXmark} />
+              style={{
+                position: 'absolute',
+                top: 5,
+                right: 5,
+                zIndex: 999,
+              }}>
+              <View
+                style={{
+                  borderRadius: 50,
+                  borderWidth: 1,
+                  borderColor: '#fff',
+                  backgroundColor: 'cyan',
+                }}>
+                <FontAwesomeIcon color="#fff" size={24} icon={faXmark} />
+              </View>
             </TouchableOpacity>
           ) : null}
           <TouchableOpacity
