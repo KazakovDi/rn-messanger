@@ -54,11 +54,9 @@ const MediaList = ({
             }}>
             {item.type === 'video/mp4' ? (
               <Video
-                // Can be a URL or a local file.
+                muted={true}
                 source={{uri: item.uri}}
-                // Store reference
                 style={{width: 128, height: 128}}
-                // Callback when remote video is buffering
               />
             ) : (
               <Image

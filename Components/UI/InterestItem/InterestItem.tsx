@@ -2,7 +2,14 @@ import React from 'react';
 import {Avatar} from '@rneui/themed';
 import {View, Text} from 'react-native';
 import {useTheme} from '@rneui/themed';
-const InterestItem = ({title, msg, avatarUrl}) => {
+
+interface InterestItem {
+  title: string;
+  msg: string;
+  avatarUrl?: string;
+}
+
+const InterestItem = ({title, msg, avatarUrl}: InterestItem) => {
   const {theme} = useTheme();
   return (
     <View

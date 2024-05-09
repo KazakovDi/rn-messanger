@@ -1,40 +1,42 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {useTheme} from '@rneui/themed';
 
-const CustomRadioButton = ({label, selected, onSelect}) => (
-  <TouchableOpacity
-    style={[
-      styles.radioButton,
-      {backgroundColor: selected ? '#007BFF' : '#FFF'},
-    ]}
-    onPress={onSelect}>
-    <Text style={[styles.radioButtonText, {color: selected ? '#FFF' : '#000'}]}>
-      {label}
-    </Text>
-  </TouchableOpacity>
-);
+interface RadioProps {
+  label: string;
+  description: string;
+  selected: boolean;
+  onSelect: () => void;
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
-  },
-  radioButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    marginVertical: 8,
-    borderWidth: 1,
-    borderColor: '#007BFF',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: 280,
-  },
-  radioButtonText: {
-    fontSize: 16,
-  },
-});
+const CustomRadioButton = ({
+  label,
+  description,
+  selected,
+  onSelect,
+}: RadioProps) => {
+  const {theme} = useTheme();
+
+  return (
+    <TouchableOpacity style={{paddingVertical: 8}} onPress={onSelect}>
+      <View style={{display: 'flex', flexDirection: 'row'}}>
+        <View
+          style={{
+            borderWidth: 1,
+            height: 16,
+            width: 16,
+            borderRadius: 50,
+            borderColor: theme.colors.header,
+            backgroundColor: selected ? theme.colors.header : 'transparent',
+            marginTop: 5,
+          }}></View>
+        <View style={{display: 'flex', marginLeft: 10}}>
+          <Text style={{fontWeight: '500'}}>{label}</Text>
+          <Text>{description}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 export default CustomRadioButton;

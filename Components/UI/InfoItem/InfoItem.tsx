@@ -2,7 +2,13 @@ import React, {useState} from 'react';
 import {View, Switch, Text} from 'react-native';
 import {useTheme, Avatar} from '@rneui/themed';
 
-const InfoItem = ({body, description, onToggle}) => {
+interface InfoItemProps {
+  body: string;
+  description: string;
+  onToggle: () => void;
+}
+
+const InfoItem = ({body, description, onToggle}: InfoItemProps) => {
   const [isEnabled, setIsEnabled] = useState(true);
   const {theme} = useTheme();
 
@@ -25,6 +31,7 @@ const InfoItem = ({body, description, onToggle}) => {
         </Text>
         <Text style={{color: theme.colors.primaryLight}}>{description}</Text>
       </View>
+
       {onToggle ? (
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}

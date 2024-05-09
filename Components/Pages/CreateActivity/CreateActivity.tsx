@@ -59,7 +59,7 @@ const CreateActivity = ({navigation}) => {
     }
   }, [filterValue]);
   return (
-    <View style={{flex: 1, backgroundColor: theme.colors.bg}}>
+    <View style={{flex: 1, backgroundColor: theme.colors.bgPrimary}}>
       <NavBar
         leftBtn={faArrowLeft}
         leftOnPress={isActive ? () => setIsActive(false) : navigation.goBack}
@@ -100,7 +100,6 @@ const CreateActivity = ({navigation}) => {
           <TouchableOpacity
             onPress={() => {
               for (let room of state) {
-                console.log('room', room);
                 if (room.name === item.displayName) {
                   navigation.navigate('Chat', {roomId: room.id});
                   return;
@@ -136,7 +135,7 @@ const CreateActivity = ({navigation}) => {
           container: {
             paddingVertical: 10,
             paddingHorizontal: 10,
-            backgroundColor: theme.colors.bg,
+            backgroundColor: theme.colors.bgPrimary,
           },
           wrapper: {
             backgroundColor: 'transparent',
@@ -155,8 +154,8 @@ const CreateActivity = ({navigation}) => {
         <TextInput
           onChangeText={e => (nameRef.current.value = e)}
           ref={nameRef}
+          placeholderTextColor={theme.colors.primary}
           inputMode="text"
-          required
           style={{
             marginVertical: 5,
             borderWidth: 1,
@@ -168,9 +167,9 @@ const CreateActivity = ({navigation}) => {
         <Text style={{color: theme.colors.icon}}>Номер телефона</Text>
         <TextInput
           onChangeText={e => (telRef.current.value = e)}
+          placeholderTextColor={theme.colors.primary}
           ref={telRef}
           inputMode="tel"
-          required
           style={{
             marginVertical: 5,
             borderWidth: 1,
@@ -182,12 +181,27 @@ const CreateActivity = ({navigation}) => {
         <Button
           onPress={() => {
             request(PERMISSIONS.ANDROID.WRITE_CONTACTS).then(res => {
-              console.log('res', nameRef.current.value, telRef.current.value);
               Contacts.addContact({
                 givenName: nameRef.current.value,
                 phoneNumbers: [{label: 'mobile', number: telRef.current.value}],
               })
-                .then(res => console.log('res', res))
+                .then(res => {
+                  const newRoomId = Math.random();
+                  dispatch(
+                    createChat({
+                      name: nameRef.current.value,
+                      type: 'chat',
+                      id: newRoomId,
+                      roomInfo: {
+                        phoneNumber: {
+                          label: 'Номер телефона',
+                          data: telRef.current.value,
+                        },
+                      },
+                    }),
+                  );
+                  navigation.navigate('Chat', {roomId: newRoomId});
+                })
                 .catch(err => console.log('err', err));
             });
           }}

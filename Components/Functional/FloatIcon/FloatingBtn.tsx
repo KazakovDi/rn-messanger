@@ -18,7 +18,7 @@ const FloatingBtn = ({icon, pos, Press}) => {
           position: 'absolute',
           ...pos,
         }}>
-        <FontAwesomeIcon color={theme.colors.bg} icon={icon} />
+        <FontAwesomeIcon color={theme.colors.bgPrimary} icon={icon} />
       </View>
     </TouchableOpacity>
   );

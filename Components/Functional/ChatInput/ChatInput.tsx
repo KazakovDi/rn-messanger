@@ -15,36 +15,40 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Animated, {useSharedValue, withTiming} from 'react-native-reanimated';
 import {pick, pickDirectory} from 'react-native-document-picker';
 import MediaList from '../MediaList/MediaList';
-const ChatInput = ({onSendMsg}) => {
+
+interface ChatInputProps {
+  onSendMsg: (input: string, attached: []) => void;
+  onTap: () => void;
+}
+
+const ChatInput = ({onSendMsg, onTap}: ChatInputProps) => {
+  const {theme} = useTheme();
+
   const [inputValue, setInputValue] = useState('');
   const [attachedPhotos, setAttachedPhotos] = useState([]);
-  console.log('attachedPhotos', attachedPhotos);
   const [isActive, setIsActive] = useState(false);
-  const {theme} = useTheme();
+
   const translateX = useSharedValue(40);
+
   const bottomSheetRef = useRef(null);
+
   const handleAnimation = value => {
     translateX.value = withTiming(value);
   };
+
   useEffect(() => {
-    if (inputValue || attachedPhotos.length) {
-      handleAnimation(0);
-    } else {
-      handleAnimation(40);
-    }
+    if (inputValue || attachedPhotos.length) handleAnimation(0);
+    else handleAnimation(40);
   }, [inputValue, attachedPhotos]);
+
   return (
     <View style={{overflow: 'scroll'}}>
       <MediaList
         onEditList={index => {
-          console.log('before', attachedPhotos);
-
-          const filtered = attachedPhotos.filter((item, filterInex) => {
-            console.log('item', item);
-            return index != filterInex;
-          });
+          const filtered = attachedPhotos.filter(
+            (item, filterInex) => index != filterInex,
+          );
           setAttachedPhotos(filtered);
-          console.log('after', attachedPhotos);
         }}
         isEditible={true}
         isHorizontal={true}
@@ -54,15 +58,12 @@ const ChatInput = ({onSendMsg}) => {
         style={{
           paddingVertical: 5,
           display: 'flex',
-          backgroundColor: theme.colors.bg,
+          backgroundColor: theme.colors.bgPrimary,
           flexDirection: 'row',
           alignItems: 'flex-end',
           paddingHorizontal: 10,
         }}>
-        <TouchableOpacity
-          onPress={() => {
-            bottomSheetRef.current.open();
-          }}>
+        <TouchableOpacity onPress={() => bottomSheetRef.current.open()}>
           <FontAwesomeIcon
             color={theme.colors.icon}
             size={30}
@@ -70,10 +71,7 @@ const ChatInput = ({onSendMsg}) => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            setIsActive(state => !state);
-          }}>
+        <TouchableOpacity onPress={() => setIsActive(state => !state)}>
           <FontAwesomeIcon
             color={theme.colors.icon}
             size={30}
@@ -90,16 +88,15 @@ const ChatInput = ({onSendMsg}) => {
             flex: 1,
           }}
           multiline
-          placeholder="отправить"
+          placeholder="Отправить"
           value={inputValue}
           maxLength={500}
-          onChangeText={e => {
-            setInputValue(e);
-          }}
+          onChangeText={e => setInputValue(e)}
+          onPressIn={onTap}
         />
         <View>
           <FontAwesomeIcon
-            color={inputValue ? theme.colors.bg : theme.colors.icon}
+            color={inputValue ? theme.colors.bgPrimary : theme.colors.icon}
             size={30}
             icon={faMicrophone}
           />
@@ -117,7 +114,7 @@ const ChatInput = ({onSendMsg}) => {
               top: '-100%',
               zIndex: 999,
               transform: [{translateX}],
-              backgroundColor: theme.colors.bg,
+              backgroundColor: theme.colors.bgPrimary,
             }}>
             <FontAwesomeIcon
               // color={theme.colors.icon}
@@ -130,52 +127,74 @@ const ChatInput = ({onSendMsg}) => {
         <RBSheet
           animationType="slide"
           openDuration={500}
-          height={350}
+          height={100}
           closeOnDragDown={true}
           dragFromTopOnly={true}
           customStyles={{
             wrapper: {
               backgroundColor: 'transparent',
             },
+            container: {
+              backgroundColor: theme.colors.bgSecondary,
+            },
           }}
           ref={bottomSheetRef}>
-          <TouchableOpacity
-            onPress={() => {
-              pick({
-                allowMultiSelection: true,
-                type: ['image/jpeg', 'video/mp4', 'video/mpeg', 'image/png'],
-                mode: 'open',
-              }).then(res => {
-                const data = res.map(item => {
-                  console.log(item);
-                  return {type: item.type, uri: item.uri};
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              marginHorizontal: 10,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                pick({
+                  allowMultiSelection: true,
+                  type: ['image/jpeg', 'video/mp4', 'video/mpeg', 'image/png'],
+                  mode: 'open',
+                }).then(res => {
+                  const data = res.map(item => {
+                    return {type: item.type, uri: item.uri};
+                  });
+                  setAttachedPhotos(data);
+                  bottomSheetRef.current.close();
                 });
-                setAttachedPhotos(data);
-                bottomSheetRef.current.close();
-              });
-              // pickDirectory();
-            }}>
-            <FontAwesomeIcon size={50} icon={faImage} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              pick({
-                allowMultiSelection: true,
-                mode: 'open',
-              }).then(res => console.log('res', res));
-            }}>
-            <FontAwesomeIcon size={50} icon={faFile} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              pick({
-                allowMultiSelection: true,
-                type: 'audio/mpeg',
-                mode: 'open',
-              }).then(res => console.log('res', res));
-            }}>
-            <FontAwesomeIcon size={50} icon={faMusic} />
-          </TouchableOpacity>
+                // pickDirectory();
+              }}>
+              <FontAwesomeIcon
+                color={theme.colors.primary}
+                size={50}
+                icon={faImage}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                pick({
+                  allowMultiSelection: true,
+                  mode: 'open',
+                }).then(res => console.log('res', res));
+              }}>
+              <FontAwesomeIcon
+                color={theme.colors.primary}
+                size={50}
+                icon={faFile}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                pick({
+                  allowMultiSelection: true,
+                  type: 'audio/mpeg',
+                  mode: 'open',
+                }).then(res => console.log('res', res));
+              }}>
+              <FontAwesomeIcon
+                color={theme.colors.primary}
+                size={50}
+                icon={faMusic}
+              />
+            </TouchableOpacity>
+          </View>
         </RBSheet>
       </View>
       {isActive ? (
@@ -184,7 +203,7 @@ const ChatInput = ({onSendMsg}) => {
             emojis={emojis}
             autoFocus={false}
             loading={false}
-            darkMode={false}
+            darkMode={theme.mode !== 'light'}
             perLine={7}
             onSelect={e => {
               const emoji = emojiFromUtf16(e.unified);

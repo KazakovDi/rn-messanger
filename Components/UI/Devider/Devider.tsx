@@ -2,11 +2,16 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import {useTheme} from '@rneui/themed';
 
-const Devider = ({title}) => {
+const Devider = ({title}: {title: string}) => {
+  const {theme} = useTheme();
   return (
     <View
-      style={{marginVertical: 5, paddingLeft: 10, backgroundColor: '#c7c7c7'}}>
-      <Text style={{color: '#000'}}>{title}</Text>
+      style={{
+        marginVertical: 5,
+        paddingLeft: 10,
+        backgroundColor: theme.colors.bgSecondary,
+      }}>
+      <Text style={{color: theme.colors.primary}}>{title}</Text>
     </View>
   );
 };

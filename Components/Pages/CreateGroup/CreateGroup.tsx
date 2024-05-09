@@ -19,7 +19,7 @@ const CreateGroup = ({navigation, route}) => {
   const id = Math.random();
   const {members} = route.params;
   return (
-    <View style={{flex: 1, backgroundColor: theme.colors.bg}}>
+    <View style={{flex: 1, backgroundColor: theme.colors.bgPrimary}}>
       <NavBar leftBtn={faArrowLeft} leftOnPress={navigation.goBack}>
         <Text>Создать группу</Text>
       </NavBar>
@@ -93,7 +93,6 @@ const CreateGroup = ({navigation, route}) => {
                 id,
                 members: members,
                 name: nameRef.current.value,
-                description: '',
                 avatarUrl: imageSource,
               }),
             );

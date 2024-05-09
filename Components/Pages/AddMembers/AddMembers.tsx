@@ -7,19 +7,21 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Contacts from 'react-native-contacts';
 
 import FloatingBtn from '../../Functional/FloatIcon/FloatingBtn';
-import {RootState, useAppDispatch, useAppSelector} from '../../../store/store';
+import {useAppDispatch} from '../../../store/store';
 import InterestItem from '../../UI/InterestItem/InterestItem';
 import {addMembers, removeActivity} from '../../../store/Room.slice';
 import {useTheme} from '@rneui/themed';
 
 const AddMembers = ({navigation, route}) => {
   const dispatch = useAppDispatch();
+  const {theme} = useTheme();
+
   const [members, setMembers] = useState([]);
   const [contactList, setContact] = useState([]);
   const [filterInputValue, setFilterInputValue] = useState('');
+
   const id = route.params.id;
   const type = route.params.type;
-  const {theme} = useTheme();
 
   useEffect(() => {
     if (filterInputValue === '') {
@@ -32,9 +34,7 @@ const AddMembers = ({navigation, route}) => {
     } else {
       const id = setTimeout(() => {
         const reg = new RegExp(filterInputValue, 'gi');
-        const offers = contactList.filter(item => {
-          return reg.test(item.displayName);
-        });
+        const offers = contactList.filter(item => reg.test(item.displayName));
         setContact(offers);
       }, 500);
       return () => {
@@ -43,7 +43,7 @@ const AddMembers = ({navigation, route}) => {
     }
   }, [filterInputValue]);
   return (
-    <View style={{flex: 1, backgroundColor: theme.colors.bg}}>
+    <View style={{flex: 1, backgroundColor: theme.colors.bgPrimary}}>
       <NavBar
         leftBtn={faArrowLeft}
         leftOnPress={() => {
@@ -67,11 +67,9 @@ const AddMembers = ({navigation, route}) => {
               const newMembers = members.filter(
                 member => item.displayName !== member,
               );
-              if (newMembers.length === members.length) {
+              if (newMembers.length === members.length)
                 setMembers([...newMembers, item.displayName]);
-              } else {
-                setMembers(newMembers);
-              }
+              else setMembers(newMembers);
             }}>
             <InterestItem msg="" title={item.displayName} />
           </TouchableOpacity>
@@ -80,9 +78,8 @@ const AddMembers = ({navigation, route}) => {
       />
       <FloatingBtn
         Press={() => {
-          if (type === 'group') {
-            navigation.navigate('Create_Group', {members});
-          }
+          if (type === 'group') navigation.navigate('Create_Group', {members});
+
           if (type === 'chanel') {
             dispatch(addMembers({id, members}));
             navigation.navigate('Chat', {roomId: id});

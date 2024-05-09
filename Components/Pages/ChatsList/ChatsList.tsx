@@ -14,7 +14,7 @@ const ChatsList = ({navigation}) => {
   const {mode, setMode} = useThemeMode();
   const {theme} = useTheme();
   return (
-    <View style={{backgroundColor: theme.colors.bg, flex: 1}}>
+    <View style={{backgroundColor: theme.colors.bgPrimary, flex: 1}}>
       <View style={{height: 50}}>
         <NavBar
           rightBtn={faMagnifyingGlass}
@@ -26,7 +26,11 @@ const ChatsList = ({navigation}) => {
               if (mode === 'light' || mode === 'undefined') setMode('dark');
               else setMode('light');
             }}>
-            <FontAwesomeIcon color={theme.colors.bg} size={24} icon={faSun} />
+            <FontAwesomeIcon
+              color={theme.colors.bgPrimary}
+              size={24}
+              icon={faSun}
+            />
           </TouchableOpacity>
         </NavBar>
       </View>

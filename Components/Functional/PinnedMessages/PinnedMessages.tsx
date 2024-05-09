@@ -17,7 +17,7 @@ const PinnedMessages = ({onPress, pinned}: IPinnedMessages) => {
         bottom: -40,
         zIndex: 100,
         width: '100%',
-        backgroundColor: theme.colors.pinnedBg,
+        backgroundColor: theme.colors.pinnedbgPrimary,
       }}>
       {pinned[activeIndex] ? (
         <TouchableOpacity

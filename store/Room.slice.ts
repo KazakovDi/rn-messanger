@@ -12,7 +12,12 @@ interface RoomItem {
   name: string;
   msgs: Msg[];
   members?: [];
-  description?: string;
+  roomInfo: {
+    [key: string]: {
+      data: any;
+      label: string;
+    };
+  };
   link?: string;
   privacyType?: 'public' | 'private';
   pinnedCache: {
@@ -44,6 +49,16 @@ const initialState: RoomSliceState = {
       pinnedCache: {},
       pinned: [],
       media: [],
+      roomInfo: {
+        phoneNumber: {
+          label: 'Номер телефона',
+          data: '+38068392340',
+        },
+        nick: {
+          label: 'Ник',
+          data: '@Oleg',
+        },
+      },
     },
   ],
   find: [],
@@ -73,7 +88,6 @@ const roomsSlice = createSlice({
       state: RoomSliceState,
       action: PayloadAction<{attaches: string[]; user: string}>,
     ) => {
-      console.log('attaches', action.payload.attaches);
       const items: Msg[] = [];
       const mediaBuffer: string[] = [];
       for (let index = 0; index < action.payload.attaches.length; index++) {
@@ -100,7 +114,7 @@ const roomsSlice = createSlice({
       for (let room of state.data) {
         if (action.payload.roomId === room.id) {
           const item = room.pinnedCache[action.payload.key];
-          console.log('item', item);
+
           if (item) {
             room.pinned = [
               ...room.pinned.filter(
@@ -128,7 +142,7 @@ const roomsSlice = createSlice({
         id: action.payload.id,
         type: action.payload.type,
         name: action.payload.name,
-        description: action.payload.description,
+        roomInfo: action.payload.roomInfo ? action.payload.roomInfo : {},
         members: action.payload.members,
         avatarUrl: action.payload.avatarUrl,
         msgs: [],
@@ -164,7 +178,6 @@ const roomsSlice = createSlice({
     },
 
     setMediaScreen: (state, action) => {
-      console.log('setMediaScreen');
       state.activeMedia = {
         uri: action.payload.uri,
         type: action.payload.type,
@@ -172,6 +185,17 @@ const roomsSlice = createSlice({
     },
     removeMediaScreen: state => {
       state.activeMedia = null;
+    },
+    editRoomInfo: (state, action) => {
+      const {id, ...payload} = action.payload;
+      for (let room of state.data) {
+        if (room.id === id) {
+          for (let key in payload) {
+            room.roomInfo[key] = payload[key];
+          }
+          return;
+        }
+      }
     },
   },
 });
@@ -186,5 +210,6 @@ export const {
   setMediaScreen,
   removeActivity,
   removeMediaScreen,
+  editRoomInfo,
 } = roomsSlice.actions;
 export const roomsReducer = roomsSlice.reducer;

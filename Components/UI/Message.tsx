@@ -45,7 +45,9 @@ const Message = ({isUser, type, uri, body, onLongPress}) => {
               <TouchableOpacity
                 onPress={() => {
                   dispatch(setMediaScreen({uri, type}));
-                }}>
+                }}
+                delayPressIn={500}
+                onLongPress={onLongPress}>
                 <Video
                   // Can be a URL or a local file.
                   source={{uri: uri}}

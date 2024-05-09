@@ -19,7 +19,7 @@ const CreateChanel = ({navigation}) => {
   const descriptionRef = useRef(null);
   const id = Math.random();
   return (
-    <View style={{flex: 1, backgroundColor: theme.colors.bg}}>
+    <View style={{flex: 1, backgroundColor: theme.colors.bgPrimary}}>
       <NavBar
         leftBtn={faArrowLeft}
         leftOnPress={() => {
@@ -34,12 +34,13 @@ const CreateChanel = ({navigation}) => {
                 type: 'chanel',
                 id: id,
                 name: nameRef.current.value,
-                description: descriptionRef.current?.value,
+                createChat: {description: descriptionRef.current?.value},
                 avatarUrl: imageSource,
                 members: [],
               }),
             );
-            navigation.navigate('Add_Members', {type: 'chanel', id});
+            // navigation.navigate('Add_Members', {type: 'chanel', id});
+            navigation.navigate('Chanel_Settings', {id});
           } else {
             setHasError(true);
           }

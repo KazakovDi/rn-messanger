@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import {useTheme, Avatar} from '@rneui/themed';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import InfoItem from '../../UI/InfoItem/InfoItem';
@@ -9,35 +9,30 @@ import MediaList from '../../Functional/MediaList/MediaList';
 import FullScreen from '../../UI/FullScreen';
 import {removeMediaScreen} from '../../../store/Room.slice';
 
-const dataUser = [
-  {body: '+367676437', key: 1, description: 'Телефон'},
-  {body: '@CoolGuy', key: 2, description: 'Имя пользователя'},
-];
 const ActivityInfo = ({navigation, route}) => {
   const dispatch = useAppDispatch();
   const {theme} = useTheme();
-  const [title, mediaData, avatarUrl] = useAppSelector((state: RootState) => {
+
+  const {
+    name: title,
+    media: mediaData,
+    avatarUrl,
+    roomInfo,
+  } = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
-      console.log('room', room);
-      if (room.id === route.params.roomId) {
-        return [room.name, room.media, room.avatarUrl];
-      }
+      if (room.id === route.params.roomId) return room;
     }
   });
-  console.log('info mediadata ', mediaData);
+
+  const covertedRoomInfo = Object.keys(roomInfo);
+
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: theme.colors.bgPrimary}}>
       <FullScreen
         media={mediaData}
-        onClose={() => {
-          dispatch(removeMediaScreen());
-        }}
+        onClose={() => dispatch(removeMediaScreen())}
       />
-      <NavBar
-        leftBtn={faArrowLeft}
-        leftOnPress={() => {
-          navigation.goBack();
-        }}>
+      <NavBar leftBtn={faArrowLeft} leftOnPress={navigation.goBack}>
         <View
           style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           {avatarUrl ? (
@@ -65,12 +60,20 @@ const ActivityInfo = ({navigation, route}) => {
         </View>
       </NavBar>
 
-      <View style={{paddingVertical: 10}}>
+      <View
+        style={{
+          paddingVertical: 10,
+          backgroundColor: theme.colors.bgSecondary,
+        }}>
         <FlatList
           renderItem={({item}) => (
-            <InfoItem body={item.body} description={item.description} />
+            <InfoItem
+              onToggle={() => {}}
+              body={roomInfo[item].label}
+              description={roomInfo[item].data}
+            />
           )}
-          data={dataUser}
+          data={covertedRoomInfo}
         />
 
         <InfoItem
@@ -81,6 +84,7 @@ const ActivityInfo = ({navigation, route}) => {
           }}
         />
       </View>
+
       <MediaList isEditible={false} isHorizontal={false} data={mediaData} />
     </View>
   );

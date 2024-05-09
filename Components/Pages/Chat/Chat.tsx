@@ -14,17 +14,16 @@ import {
   addMsg,
   addMedia,
   togglePinned,
-  setMediaScreen,
   removeMediaScreen,
 } from '../../../store/Room.slice';
 import PinnedMessages from '../../Functional/PinnedMessages/PinnedMessages';
 import NavBar from '../../Functional/NavBar/NavBar';
 import FullScreen from '../../UI/FullScreen';
-import MediaList from '../../Functional/MediaList/MediaList';
+
 const Chat = ({navigation: {navigate, goBack}, route}) => {
   const dispatch = useAppDispatch();
   const {theme} = useTheme();
-  // const [title, msgs, roomId, pinned, members]
+
   const {
     name: title,
     msgs,
@@ -35,35 +34,31 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
     media,
   } = useAppSelector((state: RootState) => {
     for (let room of state.rooms.data) {
-      console.log('room', room);
       if (room.id === route.params.roomId) return room;
-      // return [room.name, room.msgs, room.id, room.pinned, room.members];
     }
   });
   const User = useAppSelector((state: RootState) => state.user.name);
+
   const listRef = useRef(null);
+
   useEffect(() => {
     listRef.current.scrollToEnd();
   }, []);
-  const sendMsgHandler = (msg: string, attached) => {
+
+  const sendMsgHandler = (msg, attached): void => {
     dispatch(addMsg({user: User, body: msg, id: roomId}));
     dispatch(addMedia({user: User, roomId: roomId, attaches: attached}));
     listRef.current.scrollToEnd();
   };
   return (
     <>
-      <FullScreen
-        media={media}
-        onClose={() => {
-          dispatch(removeMediaScreen());
-        }}
-      />
+      <FullScreen media={media} onClose={() => dispatch(removeMediaScreen())} />
       <View
         style={{
           flex: 1,
           display: 'flex',
           justifyContent: 'space-between',
-          backgroundColor: theme.colors.chatBg,
+          backgroundColor: theme.colors.chatbgPrimary,
         }}>
         <View
           style={{
@@ -158,7 +153,10 @@ const Chat = ({navigation: {navigate, goBack}, route}) => {
           />
         </View>
 
-        <ChatInput onSendMsg={sendMsgHandler} />
+        <ChatInput
+          onTap={() => listRef.current.scrollToEnd()}
+          onSendMsg={sendMsgHandler}
+        />
       </View>
     </>
   );
